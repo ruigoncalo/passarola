@@ -7,7 +7,9 @@ import dagger.Module;
  */
 @Module(injects = {
         MainActivity.class,
-        MapsActivity.class
+        MapsActivity.class,
+        AboutActivity.class,
+        BeersActivity.class
 },
         complete = false)
 public class UiModule {

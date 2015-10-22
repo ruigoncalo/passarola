@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Passarola</string>
-    <string name="action_settings">Settings</string>
+    <string name="about">About</string>
+
+    <!-- Beer -->
+    <string name="beers">Beers</string>
+    <string name="style">Style:</string>
+    <string name="abv">ABV:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="description">Description:</string>
 </resources>
