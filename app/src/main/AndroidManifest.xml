@@ -22,6 +22,16 @@
         <activity
             android:name=".ui.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.BeersActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
 
 </manifest>
