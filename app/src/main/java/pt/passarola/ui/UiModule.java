@@ -9,7 +9,8 @@ import dagger.Module;
         MainActivity.class,
         MapsActivity.class,
         AboutActivity.class,
-        BeersActivity.class
+        BeersActivity.class,
+        PlacesActivity.class
 },
         complete = false)
 public class UiModule {

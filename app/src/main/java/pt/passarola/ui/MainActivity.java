@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id){
+            case R.id.action_places:
+                gotToPlacesActivity();
+                return true;
+
             case R.id.action_beers:
                 goToBeersActivity();
                 return true;
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToBeersActivity(){
         Intent intent = new Intent(this, BeersActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    private void gotToPlacesActivity(){
+        Intent intent = new Intent(this, PlacesActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
