@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.BeerViewModel;
+import pt.passarola.services.BusProvider;
 import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
 
 /**
@@ -22,6 +23,7 @@ import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
 public class BeersActivity extends DaggerableAppCompatActivity {
 
     @Inject BeersPresenter presenter;
+    @Inject BusProvider busProvider;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
@@ -68,5 +70,17 @@ public class BeersActivity extends DaggerableAppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        busProvider.register(this);
+    }
+
+    @Override
+    protected void onPause(){
+        busProvider.unregister(this);
+        super.onPause();
     }
 }
