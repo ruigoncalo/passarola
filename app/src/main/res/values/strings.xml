@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">Passarola</string>
+
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyAuh4INMOpNDXifvOqw8xSJ9NcREihkU8Y
+    </string>
+
+    <string name="app_name">Passarola Brewing</string>
     <string name="about">About</string>
+
+    <!-- Place -->
+    <string name="places">Places</string>
 
     <!-- Beer -->
     <string name="beers">Beers</string>
