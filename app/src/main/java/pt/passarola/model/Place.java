@@ -93,5 +93,9 @@ public class Place {
     public String getUpdated() {
         return updated;
     }
+
+    public boolean isValid(){
+        return lat != null && !lat.isEmpty() && lng != null && !lng.isEmpty();
+    }
 }
 
