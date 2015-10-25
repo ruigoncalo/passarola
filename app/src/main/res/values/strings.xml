@@ -6,6 +6,7 @@
 
     <string name="app_name">Passarola Brewing</string>
     <string name="about">About</string>
+    <string name="finding_passarola">Finding Passarola</string>
 
     <!-- Place -->
     <string name="places">Places</string>
