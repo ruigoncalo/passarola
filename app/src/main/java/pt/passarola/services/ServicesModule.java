@@ -19,8 +19,8 @@ public class ServicesModule {
     }
 
     @Provides
-    @Singleton WebApiService provideWebApiService(RestApi restApi, BusProvider busProvider) {
-        return new WebApiService(restApi, busProvider);
+    @Singleton WebApiService provideWebApiService(RestApi restApi) {
+        return new WebApiService(restApi);
     }
 }
 

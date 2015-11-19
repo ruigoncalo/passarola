@@ -1,51 +1,64 @@
 package pt.passarola.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
+import pt.passarola.R;
 import pt.passarola.model.Beer;
-import pt.passarola.model.BeerViewModel;
+import pt.passarola.model.events.BeerViewModelEvent;
+import pt.passarola.services.BeerProvider;
+import pt.passarola.services.BusProvider;
+import pt.passarola.ui.viewmodel.BeerViewModel;
+import pt.passarola.utils.Callback;
 
 /**
  * Created by ruigoncalo on 22/10/15.
  */
 public class BeersPresenter {
 
+    @Inject BeerProvider beerProvider;
+    @Inject BusProvider busProvider;
+
     @Inject
     public BeersPresenter(){
 
     }
 
-    public BeerViewModel getBeerIpa(){
-        Beer ipa = new Beer(Beer.BEER_ID_IPA, "India Pale Ale", "India Pale Ale", "6,3%",
-                "Pale and Crystal malts, American hops.",
-                "Citrus and pine aroma from all American hops. Light refreshing body. " +
-                        "Hop flavor and a solid bitterness linger in the finish. " +
-                        "Bitterness refreshes the palate when paired with oily foods like Burgers, Pizza or Stirfry.");
-
-        return createBeerViewModel(ipa);
-
+    public void start(){
+        busProvider.register(this);
     }
 
-    public BeerViewModel getBeerDos(){
-        Beer dos = new Beer(Beer.BEER_ID_DOS, "Double Oatmeal Stout", "Imperial Stout", "8%",
-                "Pale and Crystal malts, Flaked oats and Barley, Roasted malts, American hops.",
-                "Roasty aroma, chocolate, malty, oat sweetness. A smooth body, slight alcohol warmth. " +
-                        "All balanced by a healthy dose of bitterness from the hops. " +
-                        "Indulge with oysters, chocolate desserts, or all by itself.");
-
-        return createBeerViewModel(dos);
+    public void stop(){
+        busProvider.unregister(this);
     }
 
-    public BeerViewModel getBeerAra(){
-        Beer ara = new Beer(Beer.BEER_ID_ARA, "Amber Rye Ale", "Specialty Grain", "4,7%",
-                "Pilsner, Pale, Crystal, Rye and Roasted malts. German and American hops.",
-                "Light carbonation produces a smooth rich body. " +
-                        "Caramel malt sweetness balanced by the dry, spicy flavour of the rye malt. " +
-                        "Great session beer. Pairs easily with any food. " +
-                        "Excels with a big rich meaty lunch or an Arroz de Pato.");
+    public void getItems(){
+        beerProvider.getBeers(new Callback<List<Beer>>() {
+            @Override
+            public void onSuccess(List<Beer> beers) {
+                List<BeerViewModel> viewModels = generateViewModels(beers);
+                busProvider.post(new BeerViewModelEvent(viewModels));
+            }
 
-        return createBeerViewModel(ara);
+            @Override
+            public void onFailure(Exception e) {
 
+            }
+        });
+    }
+
+    private List<BeerViewModel> generateViewModels(List<Beer> beers){
+        List<BeerViewModel> result = new ArrayList<>();
+        for(Beer beer : beers){
+            BeerViewModel viewModel = createBeerViewModel(beer);
+            if(viewModel != null){
+                result.add(viewModel);
+            }
+        }
+
+        return result;
     }
 
     private BeerViewModel createBeerViewModel(Beer beer){
@@ -56,6 +69,38 @@ public class BeersPresenter {
                 .abv(beer.getAbv())
                 .ingredients(beer.getIngredients())
                 .description(beer.getDescription())
+                .drawable(getBeerDrawable(beer.getId()))
                 .build();
+    }
+
+    private int getBeerDrawable(String id){
+        int resource;
+        switch (id){
+            case Beer.BEER_ID_IPA:
+                resource = R.drawable.label_ipa_simple;
+                break;
+
+            case Beer.BEER_ID_DOS:
+                resource = R.drawable.label_dos_simple;
+                break;
+
+            case Beer.BEER_ID_ARA:
+                resource = R.drawable.label_ara_simple;
+                break;
+
+            case Beer.BEER_ID_ALCATEIA:
+                resource = R.drawable.label_alc_simple;
+                break;
+
+            case Beer.BEER_ID_HONEY:
+                resource = R.drawable.label_hih_simple;
+                break;
+
+            default: // TODO: get drawable error
+                resource = R.drawable.label_ipa_simple;
+                break;
+        }
+
+        return resource;
     }
 }

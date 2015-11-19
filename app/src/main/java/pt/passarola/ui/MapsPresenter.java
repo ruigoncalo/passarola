@@ -36,7 +36,6 @@ public class MapsPresenter {
     }
 
     public void getPlaces(){
-        webApiService.getPlaces();
     }
 
     @Subscribe

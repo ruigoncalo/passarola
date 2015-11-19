@@ -5,18 +5,20 @@ package pt.passarola.model;
  */
 public class Beer {
 
-    public static final int BEER_ID_IPA = 1;
-    public static final int BEER_ID_DOS = 2;
-    public static final int BEER_ID_ARA = 3;
+    public static final String BEER_ID_IPA = "ipa";
+    public static final String BEER_ID_DOS = "dos";
+    public static final String BEER_ID_ARA = "ara";
+    public static final String BEER_ID_ALCATEIA = "alcateia";
+    public static final String BEER_ID_HONEY = "honey";
 
-    private final int id;
+    private final String id;
     private final String name;
     private final String style;
     private final String abv;
     private final String ingredients;
     private final String description;
 
-    public Beer(int id, String name, String style, String abv, String ingredients, String description) {
+    public Beer(String id, String name, String style, String abv, String ingredients, String description) {
         this.id = id;
         this.name = name;
         this.style = style;
@@ -25,7 +27,7 @@ public class Beer {
         this.description = description;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

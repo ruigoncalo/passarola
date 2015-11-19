@@ -1,16 +1,25 @@
 package pt.passarola.ui;
 
+import android.support.annotation.Nullable;
+
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import pt.passarola.model.MetaPlaces;
 import pt.passarola.model.Place;
-import pt.passarola.model.PlaceViewModel;
-import pt.passarola.model.events.ErrorEvent;
 import pt.passarola.model.events.PlaceViewModelEvent;
+import pt.passarola.ui.viewmodel.PlaceViewModel;
+import pt.passarola.model.events.ErrorEvent;
 import pt.passarola.model.events.PlacesEvent;
 import pt.passarola.services.BusProvider;
 import pt.passarola.services.WebApiService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import timber.log.Timber;
 
 /**
@@ -35,15 +44,24 @@ public class PlacesPresenter {
     }
 
     public void getItems(){
-        webApiService.getPlaces();
+        webApiService.getPlaces(new Callback<MetaPlaces>() {
+            @Override
+            public void success(MetaPlaces metaPlaces, Response response) {
+                List<Place> places = metaPlaces.getData();
+                List<PlaceViewModel> placeViewModelList = generateViewModelList(places);
+                busProvider.post(new PlaceViewModelEvent(placeViewModelList));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     @Subscribe
     public void onPlacesEvent(PlacesEvent event){
-        for(Place place : event.getPlaceList()){
-            PlaceViewModel placeViewModel = createPlaceViewModel(place);
-            busProvider.post(new PlaceViewModelEvent(placeViewModel));
-        }
+
     }
 
     @Subscribe
@@ -51,15 +69,33 @@ public class PlacesPresenter {
         Timber.d(event.getMessage());
     }
 
-    // TODO: check fields
+    private List<PlaceViewModel> generateViewModelList(List<Place> places){
+        List<PlaceViewModel> result = new ArrayList<>();
+        for(Place place : places){
+            PlaceViewModel placeViewModel = createPlaceViewModel(place);
+            if(placeViewModel != null){
+                result.add(placeViewModel);
+            }
+        }
+
+        return result;
+    }
+
+    @Nullable
     private PlaceViewModel createPlaceViewModel(Place place){
-        return new PlaceViewModel.Builder()
-                .id(place.getId())
-                .name(place.getName())
-                .fullAddress(place.getFullAddress())
-                .council(place.getCouncil())
-                .country(place.getCountry())
-                .telephone(place.getTelephone())
-                .build();
+        PlaceViewModel result = null;
+        if(place.isValid()){
+            result = new PlaceViewModel.Builder()
+                    .id(place.getId())
+                    .name(place.getName())
+                    .fullAddress(place.getFullAddress())
+                    .council(place.getCouncil())
+                    .country(place.getCountry())
+                    .telephone(place.getTelephone())
+                    .build();
+
+        }
+
+        return result;
     }
 }

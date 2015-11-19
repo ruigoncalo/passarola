@@ -1,16 +1,17 @@
-package pt.passarola.model;
+package pt.passarola.ui.viewmodel;
 
 /**
  * Created by ruigoncalo on 22/10/15.
  */
 public class BeerViewModel {
 
-    private final int id;
+    private final String id;
     private final String name;
     private final String style;
     private final String abv;
     private final String ingredients;
     private final String description;
+    private final int drawable;
 
     private BeerViewModel(Builder builder){
         this.id = builder.id;
@@ -19,9 +20,10 @@ public class BeerViewModel {
         this.abv = builder.abv;
         this.ingredients = builder.ingredients;
         this.description = builder.description;
+        this.drawable = builder.drawable;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -45,15 +47,20 @@ public class BeerViewModel {
         return description;
     }
 
+    public int getDrawable() {
+        return drawable;
+    }
+
     public static class Builder {
-        private int id;
+        private String id;
         private String name;
         private String style;
         private String abv;
         private String ingredients;
         private String description;
+        private int drawable;
 
-        public Builder id(int id){
+        public Builder id(String id){
             this.id = id;
             return this;
         }
@@ -80,6 +87,11 @@ public class BeerViewModel {
 
         public Builder description(String description){
             this.description = description;
+            return this;
+        }
+
+        public Builder drawable(int drawable){
+            this.drawable = drawable;
             return this;
         }
 

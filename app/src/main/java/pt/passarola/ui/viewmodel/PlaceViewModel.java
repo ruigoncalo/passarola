@@ -1,4 +1,4 @@
-package pt.passarola.model;
+package pt.passarola.ui.viewmodel;
 
 /**
  * Created by ruigoncalo on 23/10/15.

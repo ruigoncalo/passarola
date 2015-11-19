@@ -1,19 +1,21 @@
 package pt.passarola.model.events;
 
-import pt.passarola.model.PlaceViewModel;
+import java.util.List;
+
+import pt.passarola.ui.viewmodel.PlaceViewModel;
 
 /**
  * Created by ruigoncalo on 23/10/15.
  */
 public class PlaceViewModelEvent {
 
-    private final PlaceViewModel placeViewModel;
+    private final List<PlaceViewModel> placeViewModelList;
 
-    public PlaceViewModelEvent(PlaceViewModel placeViewModel) {
-        this.placeViewModel = placeViewModel;
+    public PlaceViewModelEvent(List<PlaceViewModel> placeViewModelList) {
+        this.placeViewModelList = placeViewModelList;
     }
 
-    public PlaceViewModel getPlaceViewModel() {
-        return placeViewModel;
+    public List<PlaceViewModel> getPlaceViewModelList() {
+        return placeViewModelList;
     }
 }

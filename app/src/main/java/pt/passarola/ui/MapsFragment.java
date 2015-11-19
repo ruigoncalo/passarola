@@ -2,7 +2,6 @@ package pt.passarola.ui;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +52,6 @@ public class MapsFragment extends DaggerableFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_maps, container, false);
         ButterKnife.bind(this, view);
-
-        TabLayout tabs = (TabLayout) getActivity().findViewById(R.id.tabs);
-        tabs.setVisibility(View.GONE);
         return view;
     }
 

@@ -9,10 +9,8 @@ import dagger.Module;
         MainActivity.class,
         MapsFragment.class,
         AboutActivity.class,
-        BeersFragment.class,
-        BeerFragment.class,
-        EventsFragment.class,
-        PlacesFragment.class
+        BeersActivity.class,
+        PlacesActivity.class
 },
         complete = false)
 public class UiModule {
