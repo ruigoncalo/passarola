@@ -2,7 +2,7 @@ package pt.passarola.model.events;
 
 import java.util.List;
 
-import pt.passarola.ui.viewmodel.PlaceViewModel;
+import pt.passarola.model.viewmodel.PlaceViewModel;
 
 /**
  * Created by ruigoncalo on 23/10/15.

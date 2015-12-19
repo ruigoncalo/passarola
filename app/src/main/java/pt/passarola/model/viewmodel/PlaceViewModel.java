@@ -1,4 +1,6 @@
-package pt.passarola.ui.viewmodel;
+package pt.passarola.model.viewmodel;
+
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by ruigoncalo on 23/10/15.
@@ -11,6 +13,7 @@ public class PlaceViewModel {
     private final String council;
     private final String country;
     private final String telephone;
+    private final LatLng latLng;
 
     private PlaceViewModel(Builder builder){
         this.id = builder.id;
@@ -19,6 +22,7 @@ public class PlaceViewModel {
         this.council = builder.council;
         this.country = builder.country;
         this.telephone = builder.telephone;
+        this.latLng = builder.latLng;
     }
 
     public String getId() {
@@ -45,6 +49,10 @@ public class PlaceViewModel {
         return telephone;
     }
 
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
     public static class Builder {
         private String id;
         private String name;
@@ -52,6 +60,7 @@ public class PlaceViewModel {
         private String council;
         private String country;
         private String telephone;
+        private LatLng latLng;
 
         public Builder id(String id){
             this.id = id;
@@ -80,6 +89,11 @@ public class PlaceViewModel {
 
         public Builder telephone(String telephone){
             this.telephone = telephone;
+            return this;
+        }
+
+        public Builder latLng(LatLng latLng){
+            this.latLng = latLng;
             return this;
         }
 

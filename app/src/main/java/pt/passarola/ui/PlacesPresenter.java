@@ -12,15 +12,14 @@ import javax.inject.Inject;
 import pt.passarola.model.MetaPlaces;
 import pt.passarola.model.Place;
 import pt.passarola.model.events.PlaceViewModelEvent;
-import pt.passarola.ui.viewmodel.PlaceViewModel;
+import pt.passarola.model.viewmodel.PlaceViewModel;
 import pt.passarola.model.events.ErrorEvent;
-import pt.passarola.model.events.PlacesEvent;
+import pt.passarola.model.events.PlacesSuccessEvent;
 import pt.passarola.services.BusProvider;
 import pt.passarola.services.WebApiService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import timber.log.Timber;
 
 /**
  * Created by ruigoncalo on 23/10/15.
@@ -60,13 +59,13 @@ public class PlacesPresenter {
     }
 
     @Subscribe
-    public void onPlacesEvent(PlacesEvent event){
+    public void onPlacesEvent(PlacesSuccessEvent event){
 
     }
 
     @Subscribe
     public void onErrorEvent(ErrorEvent event){
-        Timber.d(event.getMessage());
+
     }
 
     private List<PlaceViewModel> generateViewModelList(List<Place> places){

@@ -34,9 +34,10 @@ public class BeersActivity extends DaggerableAppCompatActivity {
 
     private BeersAdapter adapter;
     private boolean hasItems;
+    private boolean isTypeA;
 
     @Override
-    public void onCreate(Bundle savedInstance){
+    public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.layout_beers);
         ButterKnife.bind(this);
@@ -58,15 +59,16 @@ public class BeersActivity extends DaggerableAppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
     }
 
-    private void setupAdapter(){
+    private void setupAdapter() {
         adapter = new BeersAdapter(this);
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -74,8 +76,8 @@ public class BeersActivity extends DaggerableAppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void requestItems(){
-        if(!hasItems){
+    private void requestItems() {
+        if (!hasItems) {
             presenter.getItems();
         }
     }
@@ -97,7 +99,7 @@ public class BeersActivity extends DaggerableAppCompatActivity {
 
     // receive event by bus
     @Subscribe
-    public void onBeerViewModelUpdate(BeerViewModelEvent event){
+    public void onBeerViewModelUpdate(BeerViewModelEvent event) {
         adapter.setItemList(event.getBeerViewModelList());
         hasItems = true;
     }

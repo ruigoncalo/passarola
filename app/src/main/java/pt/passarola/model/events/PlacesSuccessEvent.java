@@ -7,11 +7,11 @@ import pt.passarola.model.Place;
 /**
  * Created by ruigoncalo on 22/10/15.
  */
-public class PlacesEvent {
+public class PlacesSuccessEvent {
 
     private final List<Place> placeList;
 
-    public PlacesEvent(List<Place> placeList) {
+    public PlacesSuccessEvent(List<Place> placeList) {
         this.placeList = placeList;
     }
 

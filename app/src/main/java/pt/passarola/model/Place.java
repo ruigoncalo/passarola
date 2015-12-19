@@ -1,5 +1,6 @@
 package pt.passarola.model;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -94,8 +95,16 @@ public class Place {
         return updated;
     }
 
+    public LatLng getLatLng(){
+        Double dLat = Double.valueOf(lat);
+        Double dLng = Double.valueOf(lng);
+        return new LatLng(dLat, dLng);
+    }
+
     public boolean isValid(){
-        return lat != null && !lat.isEmpty() && lng != null && !lng.isEmpty();
+        return name != null && !name.isEmpty() &&
+                lat != null && !lat.isEmpty() &&
+                lng != null && !lng.isEmpty();
     }
 }
 

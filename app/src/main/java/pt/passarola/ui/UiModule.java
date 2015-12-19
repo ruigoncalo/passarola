@@ -7,10 +7,11 @@ import dagger.Module;
  */
 @Module(injects = {
         MainActivity.class,
-        MapsFragment.class,
+        MapsActivity.class,
         AboutActivity.class,
         BeersActivity.class,
-        PlacesActivity.class
+        PlacesActivity.class,
+        SplashActivity.class
 },
         complete = false)
 public class UiModule {

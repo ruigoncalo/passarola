@@ -10,7 +10,7 @@ import pt.passarola.model.Beer;
 import pt.passarola.model.events.BeerViewModelEvent;
 import pt.passarola.services.BeerProvider;
 import pt.passarola.services.BusProvider;
-import pt.passarola.ui.viewmodel.BeerViewModel;
+import pt.passarola.model.viewmodel.BeerViewModel;
 import pt.passarola.utils.Callback;
 
 /**
@@ -44,6 +44,11 @@ public class BeersPresenter {
 
             @Override
             public void onFailure(Exception e) {
+
+            }
+
+            @Override
+            public void isLoading(boolean loading) {
 
             }
         });

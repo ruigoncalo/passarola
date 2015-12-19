@@ -67,7 +67,6 @@ public class MapsFragment extends DaggerableFragment
     @Override
     public void onStart() {
         super.onStart();
-        presenter.start();
         busProvider.register(this);
 
         if (!isConnected && googlePlayServicesAvailable) {
@@ -84,7 +83,6 @@ public class MapsFragment extends DaggerableFragment
 
     @Override
     public void onStop() {
-        presenter.stop();
         busProvider.unregister(this);
 
         if (googleApiClient != null) {
@@ -97,7 +95,7 @@ public class MapsFragment extends DaggerableFragment
         // Do a null check to confirm that we have not already instantiated the map.
         if (map == null) {
             // Try to obtain the map from the SupportMapFragment.
-            map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
+            map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_view)).getMap();
         }
     }
 

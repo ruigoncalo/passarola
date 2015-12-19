@@ -5,13 +5,13 @@ package pt.passarola.model.events;
  */
 public class ErrorEvent {
 
-    private final String message;
+    private final Exception e;
 
-    public ErrorEvent(String message) {
-        this.message = message;
+    public ErrorEvent(Exception e) {
+        this.e = e;
     }
 
-    public String getMessage() {
-        return message;
+    public Exception getException() {
+        return e;
     }
 }

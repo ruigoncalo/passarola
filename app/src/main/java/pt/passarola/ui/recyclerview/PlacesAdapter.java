@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import pt.passarola.R;
-import pt.passarola.ui.viewmodel.PlaceViewModel;
+import pt.passarola.model.viewmodel.PlaceViewModel;
 
 /**
  * Created by ruigoncalo on 23/10/15.

@@ -8,7 +8,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
-import pt.passarola.ui.viewmodel.BeerViewModel;
+import pt.passarola.model.viewmodel.BeerViewModel;
 
 /**
  * Created by ruigoncalo on 19/11/15.

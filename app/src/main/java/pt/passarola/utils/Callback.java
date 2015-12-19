@@ -6,4 +6,5 @@ package pt.passarola.utils;
 public interface Callback<T> {
     void onSuccess(T t);
     void onFailure(Exception e);
+    void isLoading(boolean loading);
 }

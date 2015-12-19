@@ -1,5 +1,7 @@
 package pt.passarola.services;
 
+import com.squareup.otto.Bus;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -21,6 +23,11 @@ public class ServicesModule {
     @Provides
     @Singleton WebApiService provideWebApiService(RestApi restApi) {
         return new WebApiService(restApi);
+    }
+
+    @Provides
+    @Singleton PlaceProvider providePlaceProvider(BusProvider busProvider, WebApiService webApiService){
+        return new PlaceProvider(busProvider, webApiService);
     }
 }
 
