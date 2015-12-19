@@ -1,6 +1,11 @@
 package pt.passarola;
 
+import android.content.Context;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
+import dagger.Provides;
 import pt.passarola.services.ServicesModule;
 import pt.passarola.ui.UiModule;
 
@@ -16,4 +21,9 @@ public class AppModule {
         this.app = app;
     }
 
+    @Provides
+    @Singleton
+    Context providesContext(){
+        return app;
+    }
 }
