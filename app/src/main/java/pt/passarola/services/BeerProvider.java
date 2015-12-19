@@ -26,7 +26,7 @@ public class BeerProvider {
         list.add(getBeerAlcateia());
         list.add(getBeerHoney());
 
-        callback.onSuccess(list);
+        callback.onPlacesSuccessEvent(list);
     }
 
     private Beer getBeerIpa() {

@@ -7,11 +7,9 @@ import javax.inject.Inject;
 
 import pt.passarola.R;
 import pt.passarola.model.Beer;
-import pt.passarola.model.events.BeerViewModelEvent;
 import pt.passarola.services.BeerProvider;
 import pt.passarola.services.BusProvider;
 import pt.passarola.model.viewmodel.BeerViewModel;
-import pt.passarola.utils.Callback;
 
 /**
  * Created by ruigoncalo on 22/10/15.
@@ -35,23 +33,7 @@ public class BeersPresenter {
     }
 
     public void getItems(){
-        beerProvider.getBeers(new Callback<List<Beer>>() {
-            @Override
-            public void onSuccess(List<Beer> beers) {
-                List<BeerViewModel> viewModels = generateViewModels(beers);
-                busProvider.post(new BeerViewModelEvent(viewModels));
-            }
 
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-
-            @Override
-            public void isLoading(boolean loading) {
-
-            }
-        });
     }
 
     private List<BeerViewModel> generateViewModels(List<Beer> beers){
