@@ -1,15 +1,18 @@
 package pt.passarola.ui;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,17 +30,17 @@ public class MapsActivity extends DaggerableAppCompatActivity
 
     private static final String BUNDLE_KEY_MAP_STATE = "bundle-map-state";
 
+    @Inject MapsPresenter presenter;
+
     @Bind(R.id.map_view) MapView mapView;
 
     private GoogleMap googleMap;
-    private MapsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_maps);
         ButterKnife.bind(this);
-        setupPresenter();
         setupMap(savedInstanceState);
     }
 
@@ -101,11 +104,7 @@ public class MapsActivity extends DaggerableAppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         setupGoogleMap();
-        presenter.getPlaces();
-    }
-
-    private void setupPresenter(){
-        presenter = new MapsPresenter();
+        presenter.getCurrentLocation();
     }
 
     private void setupGoogleMap(){
@@ -114,18 +113,15 @@ public class MapsActivity extends DaggerableAppCompatActivity
         googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
+    private void showLocationOnMap(Location location){
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+    }
+
     private void showMarkers(List<PlaceViewModel> places){
         for(PlaceViewModel placeViewModel : places){
             googleMap.addMarker(createMarkerOption(placeViewModel));
         }
-
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .zoom(17)
-                .tilt(30)
-                .bearing(90)
-                .build();
-
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     private MarkerOptions createMarkerOption(PlaceViewModel placeViewModel){
@@ -136,12 +132,23 @@ public class MapsActivity extends DaggerableAppCompatActivity
     }
 
     @Override
-    public void onSuccess(MapItems mapItems){
+    public void onLocationSuccessEvent(Location location) {
+        showLocationOnMap(location);
+        presenter.getPlaces();
+    }
+
+    @Override
+    public void onLocationErrorEvent(Exception e) {
+
+    }
+
+    @Override
+    public void onPlacesSuccessEvent(MapItems mapItems){
         showMarkers(mapItems.getPlaces());
     }
 
     @Override
-    public void onFailure(Exception e) {
+    public void onPlacesErrorEvent(Exception e) {
 
     }
 

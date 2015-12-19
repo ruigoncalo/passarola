@@ -11,10 +11,13 @@ import javax.inject.Inject;
 
 import pt.passarola.model.MapItems;
 import pt.passarola.model.Place;
+import pt.passarola.model.events.LocationErrorEvent;
+import pt.passarola.model.events.LocationSuccessEvent;
 import pt.passarola.model.events.PlacesErrorEvent;
 import pt.passarola.model.events.PlacesSuccessEvent;
 import pt.passarola.model.viewmodel.PlaceViewModel;
 import pt.passarola.services.BusProvider;
+import pt.passarola.services.LocationProvider;
 import pt.passarola.services.PlaceProvider;
 import pt.passarola.utils.Callback;
 import pt.passarola.utils.Presenter;
@@ -24,9 +27,11 @@ import pt.passarola.utils.Presenter;
  */
 public class MapsPresenter extends Presenter<Callback<MapItems>>{
 
+    @Inject LocationProvider locationProvider;
     @Inject PlaceProvider placeProvider;
     @Inject BusProvider busProvider;
 
+    @Inject
     public MapsPresenter(){
 
     }
@@ -39,6 +44,24 @@ public class MapsPresenter extends Presenter<Callback<MapItems>>{
     public void onStop(){
         busProvider.unregister(this);
         super.onStop();
+    }
+
+    public void getCurrentLocation(){
+        locationProvider.getCurrentLocation();
+    }
+
+    @Subscribe
+    public void onLocationSuccessEvent(LocationSuccessEvent event){
+        if(getPresented() != null){
+            getPresented().onLocationSuccessEvent(event.getLocation());
+        }
+    }
+
+    @Subscribe
+    public void onLocationErrorEvent(LocationErrorEvent event){
+        if(getPresented() != null){
+            getPresented().onLocationErrorEvent(event.getException());
+        }
     }
 
     public void getPlaces(){
@@ -86,7 +109,7 @@ public class MapsPresenter extends Presenter<Callback<MapItems>>{
             final List<Place> validPlaces = new ArrayList<>(event.getPlaceList());
             final List<PlaceViewModel> placeViewModels = generateViewModelList(validPlaces);
             final MapItems mapItems = new MapItems(placeViewModels);
-            getPresented().onSuccess(mapItems);
+            getPresented().onPlacesSuccessEvent(mapItems);
             getPresented().isLoading(false);
         }
     }
@@ -94,7 +117,7 @@ public class MapsPresenter extends Presenter<Callback<MapItems>>{
     @Subscribe
     public void onPlacesErrorEvent(PlacesErrorEvent event){
         if(getPresented() != null){
-            getPresented().onFailure(event.getException());
+            getPresented().onPlacesErrorEvent(event.getException());
             getPresented().isLoading(false);
         }
     }
