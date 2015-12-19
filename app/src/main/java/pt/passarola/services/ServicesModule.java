@@ -1,6 +1,7 @@
 package pt.passarola.services;
 
-import com.squareup.otto.Bus;
+
+import android.content.Context;
 
 import javax.inject.Singleton;
 
@@ -21,13 +22,22 @@ public class ServicesModule {
     }
 
     @Provides
-    @Singleton WebApiService provideWebApiService(RestApi restApi) {
+    @Singleton
+    WebApiService provideWebApiService(RestApi restApi) {
         return new WebApiService(restApi);
     }
 
     @Provides
-    @Singleton PlaceProvider providePlaceProvider(BusProvider busProvider, WebApiService webApiService){
+    @Singleton
+    PlaceProvider providePlaceProvider(BusProvider busProvider, WebApiService webApiService) {
         return new PlaceProvider(busProvider, webApiService);
+    }
+
+
+    @Provides
+    @Singleton
+    LocationProvider providesLocationProvider(BusProvider busProvider, Context context){
+        return new LocationProvider(busProvider, context);
     }
 }
 
