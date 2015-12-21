@@ -33,11 +33,16 @@ public class ServicesModule {
         return new PlaceProvider(busProvider, webApiService);
     }
 
-
     @Provides
     @Singleton
     LocationProvider providesLocationProvider(BusProvider busProvider, Context context){
         return new LocationProvider(busProvider, context);
+    }
+
+    @Provides
+    @Singleton
+    BeerProvider providesBeerProvider(BusProvider busProvider){
+        return new BeerProvider(busProvider);
     }
 }
 
