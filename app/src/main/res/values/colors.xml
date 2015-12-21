@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Alpha values
+    100% — FF
+    95% — F2
+    90% — E6
+    85% — D9
+    80% — CC
+    75% — BF
+    70% — B3
+    65% — A6
+    60% — 99
+    55% — 8C
+    50% — 80
+    45% — 73
+    40% — 66
+    35% — 59
+    30% — 4D
+    25% — 40
+    20% — 33
+    15% — 26
+    10% — 1A
+    5% — 0D
+    0% — 00 -->
+
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="green_passarola">#8B8D09</color>
     <color name="green_200">#A5D6A7</color>
     <color name="green_500">#4CAF50</color>
@@ -13,5 +35,6 @@
     <color name="green_ipa">#4E650B</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="white_alpha_70">#bfffffff</color>
     <color name="grey_very_light">#f2f2f2</color>
 </resources>

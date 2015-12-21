@@ -6,12 +6,11 @@
 
     <string name="app_name">Passarola Brewing</string>
     <string name="about">About</string>
-    <string name="finding_passarola">Finding Passarola</string>
+    <string name="closest_places">Closest Passarolas</string>
+    <string name="places_available">Passarola is available here</string>
 
-    <!-- Place -->
     <string name="places">Places</string>
 
-    <!-- Beer -->
     <string name="beers">Beers</string>
     <string name="style">Style:</string>
     <string name="abv">ABV:</string>

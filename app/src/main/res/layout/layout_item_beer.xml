@@ -22,6 +22,7 @@
             <TextView
                 android:id="@+id/text_beer_style"
                 android:textStyle="bold"
+                android:textColor="@color/green_800"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
@@ -31,11 +32,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:src="@drawable/ic_social_public"/>
+                android:src="@drawable/ic_hot"/>
 
             <TextView
                 android:id="@+id/text_beer_abv"
                 android:textSize="14sp"
+                android:textColor="@color/green_600"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -64,6 +66,7 @@
 
                 <TextView
                     android:id="@+id/text_beer_description"
+                    android:textColor="@color/green_500"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"/>
@@ -79,7 +82,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:src="@drawable/ic_location"
+                android:src="@drawable/ic_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -87,6 +90,7 @@
                 android:id="@+id/text_beer_ingredients"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:textColor="@color/green_500"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
