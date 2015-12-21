@@ -1,20 +1,22 @@
 package pt.passarola.ui;
 
-import java.util.ArrayList;
+import com.squareup.otto.Subscribe;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import pt.passarola.R;
-import pt.passarola.model.Beer;
+import pt.passarola.model.events.BeersErrorEvent;
+import pt.passarola.model.events.BeersSuccessEvent;
+import pt.passarola.model.viewmodel.BeerViewModel;
 import pt.passarola.services.BeerProvider;
 import pt.passarola.services.BusProvider;
-import pt.passarola.model.viewmodel.BeerViewModel;
+import pt.passarola.utils.Presenter;
 
 /**
  * Created by ruigoncalo on 22/10/15.
  */
-public class BeersPresenter {
+public class BeersPresenter extends Presenter<BeersPresenterCallback> {
 
     @Inject BeerProvider beerProvider;
     @Inject BusProvider busProvider;
@@ -24,70 +26,39 @@ public class BeersPresenter {
 
     }
 
-    public void start(){
+    public void onStart(BeersPresenterCallback presented) {
+        super.onStart(presented);
         busProvider.register(this);
     }
 
-    public void stop(){
+    public void onStop() {
         busProvider.unregister(this);
+        super.onStop();
     }
 
-    public void getItems(){
-
-    }
-
-    private List<BeerViewModel> generateViewModels(List<Beer> beers){
-        List<BeerViewModel> result = new ArrayList<>();
-        for(Beer beer : beers){
-            BeerViewModel viewModel = createBeerViewModel(beer);
-            if(viewModel != null){
-                result.add(viewModel);
-            }
+    public void getBeers(){
+        if(getPresented() != null){
+            getPresented().isLoading(true);
         }
 
-        return result;
+        beerProvider.getBeers();
     }
 
-    private BeerViewModel createBeerViewModel(Beer beer){
-        return new BeerViewModel.Builder()
-                .id(beer.getId())
-                .name(beer.getName())
-                .style(beer.getStyle())
-                .abv(beer.getAbv())
-                .ingredients(beer.getIngredients())
-                .description(beer.getDescription())
-                .drawable(getBeerDrawable(beer.getId()))
-                .build();
-    }
-
-    private int getBeerDrawable(String id){
-        int resource;
-        switch (id){
-            case Beer.BEER_ID_IPA:
-                resource = R.drawable.label_ipa_simple;
-                break;
-
-            case Beer.BEER_ID_DOS:
-                resource = R.drawable.label_dos_simple;
-                break;
-
-            case Beer.BEER_ID_ARA:
-                resource = R.drawable.label_ara_simple;
-                break;
-
-            case Beer.BEER_ID_ALCATEIA:
-                resource = R.drawable.label_alc_simple;
-                break;
-
-            case Beer.BEER_ID_HONEY:
-                resource = R.drawable.label_hih_simple;
-                break;
-
-            default: // TODO: get drawable error
-                resource = R.drawable.label_ipa_simple;
-                break;
+    @Subscribe
+    public void onBeersSuccessEvent(BeersSuccessEvent event){
+        if(getPresented() != null) {
+            List<BeerViewModel> beerViewModels = BeerViewModel.createViewModelList(event.getBeerList());
+            getPresented().onBeersSuccessEvent(beerViewModels);
+            getPresented().isLoading(false);
         }
-
-        return resource;
     }
+
+    @Subscribe
+    public void onBeersErrorEvent(BeersErrorEvent event){
+        if(getPresented() != null){
+            getPresented().onBeersErrorEvent(event.getException());
+            getPresented().isLoading(false);
+        }
+    }
+
 }

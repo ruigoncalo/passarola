@@ -8,6 +8,7 @@ public class Beer {
     public static final String BEER_ID_IPA = "ipa";
     public static final String BEER_ID_DOS = "dos";
     public static final String BEER_ID_ARA = "ara";
+    public static final String BEER_ID_BDI = "bdi";
     public static final String BEER_ID_ALCATEIA = "alcateia";
     public static final String BEER_ID_HONEY = "honey";
 

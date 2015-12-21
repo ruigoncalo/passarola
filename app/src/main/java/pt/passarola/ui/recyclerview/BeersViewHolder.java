@@ -21,9 +21,9 @@ public class BeersViewHolder extends RecyclerView.ViewHolder implements Composer
     @Bind(R.id.text_beer_description) TextView textDescription;
     @Bind(R.id.text_beer_ingredients) TextView textIngredients;
 
-    private BaseAdapter.OnBaseItemClickListener onItemClickListener;
+    private OnBaseItemClickListener onItemClickListener;
 
-    public BeersViewHolder(View view, BaseAdapter.OnBaseItemClickListener onItemClickListener) {
+    public BeersViewHolder(View view, OnBaseItemClickListener onItemClickListener) {
         super(view);
         this.onItemClickListener = onItemClickListener;
         ButterKnife.bind(this, view);
@@ -40,7 +40,8 @@ public class BeersViewHolder extends RecyclerView.ViewHolder implements Composer
 
     @Override
     public void compose(final BeerViewModel beerViewModel, final int position) {
-        textStyle.setText(beerViewModel.getStyle());
+        String title = beerViewModel.getName() + " * " + beerViewModel.getStyle();
+        textStyle.setText(title);
         textAbv.setText(beerViewModel.getAbv());
         textDescription.setText(beerViewModel.getDescription());
         textIngredients.setText(beerViewModel.getIngredients());

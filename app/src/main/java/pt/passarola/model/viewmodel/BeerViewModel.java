@@ -1,5 +1,11 @@
 package pt.passarola.model.viewmodel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pt.passarola.R;
+import pt.passarola.model.Beer;
+
 /**
  * Created by ruigoncalo on 22/10/15.
  */
@@ -98,5 +104,64 @@ public class BeerViewModel {
         public BeerViewModel build(){
             return new BeerViewModel(this);
         }
+    }
+
+    public static List<BeerViewModel> createViewModelList(List<Beer> beers){
+        List<BeerViewModel> result = new ArrayList<>();
+        for(Beer beer : beers){
+            BeerViewModel viewModel = createBeerViewModel(beer);
+            if(viewModel != null){
+                result.add(viewModel);
+            }
+        }
+
+        return result;
+    }
+
+    public static BeerViewModel createBeerViewModel(Beer beer){
+        return new BeerViewModel.Builder()
+                .id(beer.getId())
+                .name(beer.getName())
+                .style(beer.getStyle())
+                .abv(beer.getAbv())
+                .ingredients(beer.getIngredients())
+                .description(beer.getDescription())
+                .drawable(getBeerDrawable(beer.getId()))
+                .build();
+    }
+
+    private static int getBeerDrawable(String id){
+        int resource;
+        switch (id){
+            case Beer.BEER_ID_IPA:
+                resource = R.drawable.label_ipa_simple;
+                break;
+
+            case Beer.BEER_ID_DOS:
+                resource = R.drawable.label_dos_simple;
+                break;
+
+            case Beer.BEER_ID_ARA:
+                resource = R.drawable.label_ara_simple;
+                break;
+
+            case Beer.BEER_ID_BDI:
+                resource = R.drawable.label_bdipa_simple;
+                break;
+
+            case Beer.BEER_ID_ALCATEIA:
+                resource = R.drawable.label_alc_simple;
+                break;
+
+            case Beer.BEER_ID_HONEY:
+                resource = R.drawable.label_hih_simple;
+                break;
+
+            default: // TODO: get drawable error
+                resource = R.drawable.label_ipa_simple;
+                break;
+        }
+
+        return resource;
     }
 }

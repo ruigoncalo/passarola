@@ -1,40 +1,34 @@
 package pt.passarola.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.MenuItem;
 
-import com.squareup.otto.Subscribe;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
-import pt.passarola.model.events.BeerViewModelEvent;
-import pt.passarola.services.BusProvider;
+import pt.passarola.model.viewmodel.BeerViewModel;
 import pt.passarola.ui.recyclerview.BeersAdapter;
 import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
 
 /**
  * Created by ruigoncalo on 22/10/15.
  */
-public class BeersActivity extends DaggerableAppCompatActivity {
+public class BeersActivity extends DaggerableAppCompatActivity implements BeersPresenterCallback{
 
     @Inject BeersPresenter presenter;
-    @Inject BusProvider busProvider;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
-    @Bind(R.id.fab) FloatingActionButton fab;
 
     private BeersAdapter adapter;
     private boolean hasItems;
-    private boolean isTypeA;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -42,26 +36,25 @@ public class BeersActivity extends DaggerableAppCompatActivity {
         setContentView(R.layout.layout_beers);
         ButterKnife.bind(this);
         setupToolbar();
-        setupFab();
         setupAdapter();
         setupRecyclerView();
     }
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setTitle(getString(R.string.app_name));
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.beers);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
-    private void setupFab() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
 
-            }
-        });
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupAdapter() {
@@ -78,29 +71,41 @@ public class BeersActivity extends DaggerableAppCompatActivity {
 
     private void requestItems() {
         if (!hasItems) {
-            presenter.getItems();
+            presenter.getBeers();
         }
     }
 
     @Override
-    public void onResume() {
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart(this);
+    }
+
+    @Override
+    public void onResume(){
         super.onResume();
-        busProvider.register(this);
-        presenter.start();
         requestItems();
     }
 
     @Override
-    public void onPause() {
-        busProvider.unregister(this);
-        presenter.stop();
-        super.onPause();
+    protected void onStop() {
+        presenter.onStop();
+        super.onStop();
     }
 
-    // receive event by bus
-    @Subscribe
-    public void onBeerViewModelUpdate(BeerViewModelEvent event) {
-        adapter.setItemList(event.getBeerViewModelList());
+    @Override
+    public void onBeersSuccessEvent(List<BeerViewModel> list) {
+        adapter.setItemList(list);
         hasItems = true;
+    }
+
+    @Override
+    public void onBeersErrorEvent(Exception e) {
+
+    }
+
+    @Override
+    public void isLoading(boolean loading) {
+
     }
 }

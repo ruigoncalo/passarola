@@ -3,30 +3,30 @@ package pt.passarola.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import pt.passarola.model.Beer;
-import pt.passarola.utils.Callback;
+import pt.passarola.model.events.BeersSuccessEvent;
 
 /**
  * Created by ruigoncalo on 19/11/15.
  */
 public class BeerProvider {
 
-    @Inject
-    public BeerProvider() {
+    private BusProvider busProvider;
 
+    public BeerProvider(BusProvider busProvider) {
+        this.busProvider = busProvider;
     }
 
-    public void getBeers(Callback<List<Beer>> callback) {
+    public void getBeers() {
         List<Beer> list = new ArrayList<>();
         list.add(getBeerIpa());
         list.add(getBeerDos());
         list.add(getBeerAra());
+        list.add(getBeerBdi());
         list.add(getBeerAlcateia());
         list.add(getBeerHoney());
 
-        callback.onPlacesSuccessEvent(list);
+        busProvider.post(new BeersSuccessEvent(list));
     }
 
     private Beer getBeerIpa() {
@@ -53,6 +53,13 @@ public class BeerProvider {
                         "Caramel malt sweetness balanced by the dry, spicy flavour of the rye malt. " +
                         "Great session beer. Pairs easily with any food. " +
                         "Excels with a big rich meaty lunch or an Arroz de Pato.");
+
+    }
+
+    private Beer getBeerBdi() {
+        return new Beer(Beer.BEER_ID_BDI, "Blind Date IPA", "India Pale Ale", "6,5%",
+                "Pale and Munich malts, American hops and Hop Oils.",
+                "Big citrus and pine aroma. Hoppy flavour with a long and bitter finish. Very balanced.");
 
     }
 
