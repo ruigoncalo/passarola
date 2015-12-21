@@ -2,7 +2,6 @@ package pt.passarola.ui.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -50,9 +49,4 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder>
     public T getItem(int position){
         return itemList.get(position);
     }
-
-    public interface OnBaseItemClickListener {
-        void onBaseItemClick(int position, View view);
-    }
-
 }
