@@ -7,12 +7,12 @@ import android.os.Handler;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import pt.passarola.R;
 import pt.passarola.services.PlaceProvider;
 import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
 
 /**
+ * Based on https://www.bignerdranch.com/blog/splash-screens-the-right-way/
+ *
  * Created by ruigoncalo on 18/12/15.
  */
 public class SplashActivity extends DaggerableAppCompatActivity {
@@ -27,10 +27,7 @@ public class SplashActivity extends DaggerableAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_splash);
-        ButterKnife.bind(this);
         initTasks();
-
     }
 
     @Override
@@ -47,7 +44,6 @@ public class SplashActivity extends DaggerableAppCompatActivity {
 
     private void initTasks(){
         handler = new Handler();
-
         runnable = new Runnable() {
             @Override
             public void run() {
