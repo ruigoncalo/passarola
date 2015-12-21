@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="pt.passarola"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="pt.passarola"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -15,7 +16,7 @@
     <application
         android:name="pt.passarola.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -27,30 +28,34 @@
         <activity
             android:name=".ui.BeersActivity"
             android:configChanges="orientation"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/MainTheme"/>
 
         <activity
             android:name=".ui.PlacesActivity"
             android:configChanges="orientation"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/MainTheme"/>
 
         <activity
             android:name=".ui.AboutActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="orientation"
+            android:theme="@style/MainTheme"/>
+
+        <activity
+            android:name=".ui.MapsActivity"
+            android:configChanges="orientation"
+            android:theme="@style/MainTheme"/>
 
         <activity
             android:name=".ui.SplashActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation"
-            android:theme="@style/FullScreen">
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.MapsActivity"/>
 
     </application>
 
