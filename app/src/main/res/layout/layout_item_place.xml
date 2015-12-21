@@ -17,6 +17,7 @@
             android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/green_800"
             android:textSize="16sp"
             android:textStyle="bold"/>
 
@@ -25,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:textColor="@color/green_800"
             android:textSize="14sp"/>
 
         <LinearLayout
@@ -37,11 +39,13 @@
                 android:id="@+id/text_council"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/green_500"
                 android:textSize="14sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/green_500"
                 android:layout_marginRight="3dp"
                 android:text=","
                 android:textSize="14sp"/>
@@ -50,6 +54,8 @@
                 android:id="@+id/text_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/green_500"
                 android:textSize="14sp"/>
 
         </LinearLayout>
@@ -59,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:textSize="14sp"
-            android:textStyle="italic"/>
+            android:textColor="@color/green_600"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

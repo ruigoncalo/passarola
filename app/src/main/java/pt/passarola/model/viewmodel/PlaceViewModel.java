@@ -1,6 +1,14 @@
 package pt.passarola.model.viewmodel;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import pt.passarola.model.ClosestPlace;
+import pt.passarola.model.Place;
 
 /**
  * Created by ruigoncalo on 23/10/15.
@@ -14,6 +22,7 @@ public class PlaceViewModel {
     private final String country;
     private final String telephone;
     private final LatLng latLng;
+    private final int distance;
 
     private PlaceViewModel(Builder builder){
         this.id = builder.id;
@@ -23,6 +32,7 @@ public class PlaceViewModel {
         this.country = builder.country;
         this.telephone = builder.telephone;
         this.latLng = builder.latLng;
+        this.distance = builder.distance;
     }
 
     public String getId() {
@@ -53,6 +63,10 @@ public class PlaceViewModel {
         return latLng;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
     public static class Builder {
         private String id;
         private String name;
@@ -61,6 +75,7 @@ public class PlaceViewModel {
         private String country;
         private String telephone;
         private LatLng latLng;
+        private int distance;
 
         public Builder id(String id){
             this.id = id;
@@ -97,8 +112,64 @@ public class PlaceViewModel {
             return this;
         }
 
+        public Builder distance(int distance){
+            this.distance = distance;
+            return this;
+        }
+
         public PlaceViewModel build(){
             return new PlaceViewModel(this);
         }
+    }
+
+    public static List<PlaceViewModel> createViewModelList(List<Place> places){
+        List<PlaceViewModel> result = new ArrayList<>();
+        for(Place place : places){
+            PlaceViewModel placeViewModel = createPlaceViewModel(place);
+            if(placeViewModel != null){
+                result.add(placeViewModel);
+            }
+        }
+
+        return result;
+    }
+
+    @Nullable
+    public static PlaceViewModel createPlaceViewModel(Place place){
+        PlaceViewModel result = null;
+        if(place.isValid()){
+            result = new PlaceViewModel.Builder()
+                    .id(place.getId())
+                    .name(place.getName())
+                    .fullAddress(place.getFullAddress())
+                    .council(place.getCouncil())
+                    .country(place.getCountry())
+                    .telephone(place.getTelephone())
+                    .latLng(place.getLatLng())
+                    .build();
+
+        }
+
+        return result;
+    }
+
+    @Nullable
+    public static PlaceViewModel createPlaceViewModel(ClosestPlace closestPlace){
+        PlaceViewModel result = null;
+        if(closestPlace.getPlace().isValid()){
+            result = new Builder()
+                    .id(closestPlace.getPlace().getId())
+                    .name(closestPlace.getPlace().getName())
+                    .fullAddress(closestPlace.getPlace().getFullAddress())
+                    .council(closestPlace.getPlace().getCouncil())
+                    .country(closestPlace.getPlace().getCountry())
+                    .telephone(closestPlace.getPlace().getTelephone())
+                    .latLng(closestPlace.getPlace().getLatLng())
+                    .distance(closestPlace.getDistance())
+                    .build();
+
+        }
+
+        return result;
     }
 }

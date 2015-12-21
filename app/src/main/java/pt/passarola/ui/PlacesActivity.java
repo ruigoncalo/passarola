@@ -3,26 +3,26 @@ package pt.passarola.ui;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
-import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
-import pt.passarola.model.events.PlaceViewModelEvent;
-import pt.passarola.services.BusProvider;
+import pt.passarola.model.MapItems;
 import pt.passarola.ui.recyclerview.PlacesAdapter;
 import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
 
 /**
  * Created by ruigoncalo on 23/10/15.
  */
-public class PlacesActivity extends DaggerableAppCompatActivity {
+public class PlacesActivity extends DaggerableAppCompatActivity implements PlacesPresenterCallback {
 
     @Inject PlacesPresenter presenter;
-    @Inject BusProvider busProvider;
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
 
     private PlacesAdapter adapter;
@@ -33,8 +33,44 @@ public class PlacesActivity extends DaggerableAppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.layout_places);
         ButterKnife.bind(this);
+        setupToolbar();
         setupAdapter();
         setupRecyclerView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        requestItems();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(R.string.places_available);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupAdapter(){
@@ -51,29 +87,23 @@ public class PlacesActivity extends DaggerableAppCompatActivity {
 
     private void requestItems(){
         if(!hasItems){
-            presenter.getItems();
+            presenter.getPlaces();
         }
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        busProvider.register(this);
-        presenter.start();
-        requestItems();
+    public void onPlacesSuccessEvent(MapItems items) {
+        adapter.setItemList(items.getPlaces());
+        hasItems = true;
     }
 
     @Override
-    public void onPause(){
-        busProvider.unregister(this);
-        presenter.stop();
-        super.onPause();
+    public void onPlacesErrorEvent(Exception e) {
+
     }
 
-    // receive event by bus
-    @Subscribe
-    public void onPlaceViewModelEvent(PlaceViewModelEvent event){
-        adapter.setItemList(event.getPlaceViewModelList());
-        hasItems = true;
+    @Override
+    public void isLoading(boolean loading) {
+
     }
 }

@@ -20,9 +20,9 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
     @Bind(R.id.text_country) TextView countryTextView;
     @Bind(R.id.text_telephone) TextView telephoneTextView;
 
-    private BaseAdapter.OnBaseItemClickListener onItemClickListener;
+    private OnBaseItemClickListener onItemClickListener;
 
-    public PlacesViewHolder(View view, BaseAdapter.OnBaseItemClickListener onItemClickListener) {
+    public PlacesViewHolder(View view, OnBaseItemClickListener onItemClickListener) {
         super(view);
         this.onItemClickListener = onItemClickListener;
         ButterKnife.bind(this, view);
