@@ -1,9 +1,8 @@
 package pt.passarola.utils;
 
 import android.content.Context;
-import android.util.TypedValue;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
@@ -13,16 +12,9 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 public class Utils {
 
     /**
-     * Validate if user has GooglePlayServices app
+     * Validate if device has GooglePlayServices app installed
      */
     public static boolean isGooglePlayServicesAvailable(Context context) {
-        return GooglePlayServicesUtil.isGooglePlayServicesAvailable(context) == SUCCESS;
-    }
-
-    /**
-     * converting dp to px
-     */
-    public static float dpToPx(Context context, int dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == SUCCESS;
     }
 }
