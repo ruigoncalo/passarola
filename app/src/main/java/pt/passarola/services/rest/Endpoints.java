@@ -1,4 +1,4 @@
-package pt.passarola.utils.rest;
+package pt.passarola.services.rest;
 
 /**
  * Created by ruigoncalo on 22/10/15.

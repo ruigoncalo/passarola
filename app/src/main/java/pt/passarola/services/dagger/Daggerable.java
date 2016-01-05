@@ -1,4 +1,4 @@
-package pt.passarola.utils.dagger;
+package pt.passarola.services.dagger;
 
 /**
  * Created by ruigoncalo on 22/10/15.

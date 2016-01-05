@@ -1,4 +1,4 @@
-package pt.passarola.utils.rest;
+package pt.passarola.services.rest;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

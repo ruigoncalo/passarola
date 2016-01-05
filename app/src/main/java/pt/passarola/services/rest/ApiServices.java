@@ -1,4 +1,4 @@
-package pt.passarola.utils.rest;
+package pt.passarola.services.rest;
 
 import pt.passarola.model.MetaPlaces;
 import retrofit.Callback;

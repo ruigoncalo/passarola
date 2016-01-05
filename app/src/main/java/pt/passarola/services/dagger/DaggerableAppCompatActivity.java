@@ -1,4 +1,4 @@
-package pt.passarola.utils.dagger;
+package pt.passarola.services.dagger;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
