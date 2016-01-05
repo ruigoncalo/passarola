@@ -5,14 +5,12 @@ import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import pt.passarola.model.events.LocationErrorEvent;
 import pt.passarola.model.events.LocationSuccessEvent;
-
-import static com.google.android.gms.common.ConnectionResult.SUCCESS;
+import pt.passarola.utils.Utils;
 
 
 /**
@@ -40,7 +38,7 @@ public class LocationProvider
     }
 
     private boolean isGooglePlayServicesAvailable() {
-        return GooglePlayServicesUtil.isGooglePlayServicesAvailable(context) == SUCCESS;
+        return Utils.isGooglePlayServicesAvailable(context);
     }
 
     private void createGoogleApiClient() {

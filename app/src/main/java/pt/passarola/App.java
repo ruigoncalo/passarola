@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import dagger.ObjectGraph;
-import pt.passarola.utils.dagger.Daggerable;
-import pt.passarola.utils.rest.RestApi;
+import pt.passarola.services.dagger.Daggerable;
+import pt.passarola.services.rest.RestApi;
 import timber.log.Timber;
 
 /**

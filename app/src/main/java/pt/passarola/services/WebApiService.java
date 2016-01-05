@@ -1,7 +1,7 @@
 package pt.passarola.services;
 
 import pt.passarola.model.MetaPlaces;
-import pt.passarola.utils.rest.RestApi;
+import pt.passarola.services.rest.RestApi;
 import retrofit.Callback;
 
 /**
