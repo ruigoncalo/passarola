@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
-import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
+import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 
 /**
  * Created by ruigoncalo on 22/10/15.

@@ -8,7 +8,7 @@ import android.os.Handler;
 import javax.inject.Inject;
 
 import pt.passarola.services.PlaceProvider;
-import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
+import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 
 /**
  * Based on https://www.bignerdranch.com/blog/splash-screens-the-right-way/
@@ -43,6 +43,7 @@ public class SplashActivity extends DaggerableAppCompatActivity {
     }
 
     private void initTasks(){
+        placeProvider.getPlaces();
         handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -50,8 +51,6 @@ public class SplashActivity extends DaggerableAppCompatActivity {
                 goToMainActivity();
             }
         };
-
-        placeProvider.getPlaces();
     }
 
     private void goToMainActivity(){

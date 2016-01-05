@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.MapItems;
 import pt.passarola.ui.recyclerview.PlacesAdapter;
-import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
+import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 
 /**
  * Created by ruigoncalo on 23/10/15.

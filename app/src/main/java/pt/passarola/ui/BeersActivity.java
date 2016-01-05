@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.BeerViewModel;
 import pt.passarola.ui.recyclerview.BeersAdapter;
-import pt.passarola.utils.dagger.DaggerableAppCompatActivity;
+import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 
 /**
  * Created by ruigoncalo on 22/10/15.
