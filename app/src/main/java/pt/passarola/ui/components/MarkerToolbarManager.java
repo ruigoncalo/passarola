@@ -12,7 +12,7 @@ import pt.passarola.R;
 /**
  * Created by ruigoncalo on 04/01/16.
  */
-public class MarkerToolbar {
+public class MarkerToolbarManager {
 
     public static final int ICON_1 = 1;
     public static final int ICON_2 = 2;
@@ -22,7 +22,7 @@ public class MarkerToolbar {
     private View markerToolbar;
     private OnMarkerToolbarClickListener listener;
 
-    public MarkerToolbar(Context context){
+    public MarkerToolbarManager(Context context){
         this.context = context;
     }
 

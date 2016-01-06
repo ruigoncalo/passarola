@@ -9,7 +9,7 @@ import pt.passarola.utils.ScreenInspector;
 /**
  * Created by ruigoncalo on 04/01/16.
  */
-public class PassarolaToolbar {
+public class PassarolaToolbarManager {
 
     private static final String TAB_CLOSEST = "tab-closest";
     private static final String TAB_PLACES = "tab-places";
@@ -23,7 +23,7 @@ public class PassarolaToolbar {
     private int size;
 
 
-    public PassarolaToolbar(TabLayout tabLayout) {
+    public PassarolaToolbarManager(TabLayout tabLayout) {
         this.tabLayout = tabLayout;
         setupTabLayout();
         setupSize();
