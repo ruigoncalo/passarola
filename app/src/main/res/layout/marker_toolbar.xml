@@ -5,6 +5,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/layout_phone"
+        android:src="@drawable/ic_phone"
         android:layout_margin="12dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -124,34 +125,6 @@
                 android:textSize="14sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
-
-            <!--ImageView
-                android:id="@+id/icon_marker_1"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/facebook_icon"/-->
-
-            <!--ImageView
-                android:id="@+id/icon_marker_2"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/zomato_icon"/-->
-
-            <!--ImageView
-                android:id="@+id/icon_marker_3"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/tripadvisor_icon"/-->
-
 
         </LinearLayout>
 
