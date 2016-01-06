@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -69,7 +70,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     private Location currentLocation;
     private GoogleMap googleMap;
     private PlacesMixedAdapter adapter;
-    private Map<PlaceViewModel, Marker> markersMap;
+    private Map<String, Pair<PlaceViewModel, Marker>> markersMap;
     private MarkerToolbarManager markerToolbarManager;
     private int recyclerViewHeight;
 
@@ -78,7 +79,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         public void onBaseItemClick(int position, View view) {
             MixedPlaceViewModel mixedPlaceViewModel =
                     (MixedPlaceViewModel) adapter.getItem(position);
-            Marker marker = markersMap.get(mixedPlaceViewModel.getPlaceViewModel());
+            Marker marker = markersMap.get(mixedPlaceViewModel.getPlaceViewModel().getId()).second;
             centerMapOnLatLng(marker.getPosition());
             marker.showInfoWindow();
             dismissClosestPlaces();
@@ -291,7 +292,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
             for (PlaceViewModel placeViewModel : places) {
                 Marker marker = googleMap.addMarker(createMarkerOption(placeViewModel));
                 boundsBuilder.include(marker.getPosition());
-                markersMap.put(placeViewModel, marker);
+                markersMap.put(placeViewModel.getId(), new Pair<>(placeViewModel, marker));
             }
             LatLngBounds bounds = boundsBuilder.build();
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 160);
@@ -372,9 +373,9 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
 
     @Nullable
     private PlaceViewModel getPlaceViewModelFromMap(Marker marker){
-        for(Map.Entry<PlaceViewModel, Marker> entry : markersMap.entrySet()){
-            if(entry.getValue().getId().equals(marker.getId())){
-                return entry.getKey();
+        for(Map.Entry<String, Pair<PlaceViewModel, Marker>> entry : markersMap.entrySet()){
+            if(entry.getValue().second.getId().equals(marker.getId())){
+                return entry.getValue().first;
             }
         }
 
