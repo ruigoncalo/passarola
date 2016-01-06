@@ -29,7 +29,7 @@ public class ScreenInspector {
         return size.x;
     }
 
-    public int getScreenHeightPx(Context context){
+    public static int getScreenHeightPx(Context context){
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
@@ -42,12 +42,12 @@ public class ScreenInspector {
         return configuration.screenWidthDp;
     }
 
-    public int getScreenHeightDp(Context context){
+    public static int getScreenHeightDp(Context context){
         Configuration configuration = context.getResources().getConfiguration();
         return configuration.screenHeightDp;
     }
 
-    public int getStatusBarHeightPx(Context context){
+    public static int getStatusBarHeightPx(Context context){
         return (int) dpToPx(context, STATUS_BAR_HEIGHT_DP);
     }
 

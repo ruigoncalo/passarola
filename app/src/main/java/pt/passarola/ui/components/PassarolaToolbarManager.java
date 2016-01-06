@@ -1,9 +1,9 @@
 package pt.passarola.ui.components;
 
 import android.support.design.widget.TabLayout;
-import android.view.animation.AccelerateDecelerateInterpolator;
 
 import pt.passarola.R;
+import pt.passarola.utils.AnimatorManager;
 import pt.passarola.utils.ScreenInspector;
 
 /**
@@ -80,15 +80,11 @@ public class PassarolaToolbarManager {
 
     public void show(boolean show) {
         if (show) {
-            tabLayout.animate()
-                    .translationY(0)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .setDuration(200);
+            // sliding up
+            AnimatorManager.slideInView(tabLayout, 0);
         } else {
-            tabLayout.animate()
-                    .translationY(size)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .setDuration(200);
+            // sliding down
+            AnimatorManager.slideOutView(tabLayout, size);
         }
     }
 

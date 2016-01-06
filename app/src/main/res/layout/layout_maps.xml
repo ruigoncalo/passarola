@@ -26,14 +26,19 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white_alpha_70"/>
+            android:layout_height="match_parent"/>
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/layout_coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/tabs_layout"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_marker_toolbar"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs_layout"
