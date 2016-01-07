@@ -19,6 +19,7 @@ public class Place {
     private String lng;
     private String type;
     private String facebook;
+    private String zomato;
     private String gmaps;
     private String tripadvisor;
     private String website;
@@ -93,6 +94,10 @@ public class Place {
 
     public String getUpdated() {
         return updated;
+    }
+
+    public String getZomato() {
+        return zomato;
     }
 
     public LatLng getLatLng(){

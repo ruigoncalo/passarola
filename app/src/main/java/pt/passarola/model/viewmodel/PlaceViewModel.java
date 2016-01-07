@@ -23,6 +23,9 @@ public class PlaceViewModel {
     private final String telephone;
     private final LatLng latLng;
     private final int distance;
+    private final String facebook;
+    private final String zomato;
+    private final String tripadvisor;
 
     private PlaceViewModel(Builder builder){
         this.id = builder.id;
@@ -33,6 +36,9 @@ public class PlaceViewModel {
         this.telephone = builder.telephone;
         this.latLng = builder.latLng;
         this.distance = builder.distance;
+        this.facebook = builder.facebook;
+        this.zomato = builder.zomato;
+        this.tripadvisor = builder.tripadvisor;
     }
 
     public String getId() {
@@ -67,6 +73,18 @@ public class PlaceViewModel {
         return distance;
     }
 
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public String getZomato() {
+        return zomato;
+    }
+
+    public String getTripadvisor() {
+        return tripadvisor;
+    }
+
     public static class Builder {
         private String id;
         private String name;
@@ -76,6 +94,9 @@ public class PlaceViewModel {
         private String telephone;
         private LatLng latLng;
         private int distance;
+        private String facebook;
+        private String zomato;
+        private String tripadvisor;
 
         public Builder id(String id){
             this.id = id;
@@ -117,6 +138,21 @@ public class PlaceViewModel {
             return this;
         }
 
+        public Builder facebook(String facebook){
+            this.facebook = facebook;
+            return this;
+        }
+
+        public Builder zomato(String zomato){
+            this.zomato = zomato;
+            return this;
+        }
+
+        public Builder tripadvisor(String tripadvisor){
+            this.tripadvisor = tripadvisor;
+            return this;
+        }
+
         public PlaceViewModel build(){
             return new PlaceViewModel(this);
         }
@@ -138,7 +174,7 @@ public class PlaceViewModel {
     public static PlaceViewModel createPlaceViewModel(Place place){
         PlaceViewModel result = null;
         if(place.isValid()){
-            result = new PlaceViewModel.Builder()
+            result = new Builder()
                     .id(place.getId())
                     .name(place.getName())
                     .fullAddress(place.getFullAddress())
@@ -146,6 +182,9 @@ public class PlaceViewModel {
                     .country(place.getCountry())
                     .telephone(place.getTelephone())
                     .latLng(place.getLatLng())
+                    .facebook(place.getFacebook())
+                    .zomato(place.getZomato())
+                    .tripadvisor(place.getTripadvisor())
                     .build();
 
         }
@@ -166,6 +205,9 @@ public class PlaceViewModel {
                     .telephone(closestPlace.getPlace().getTelephone())
                     .latLng(closestPlace.getPlace().getLatLng())
                     .distance(closestPlace.getDistance())
+                    .facebook(closestPlace.getPlace().getFacebook())
+                    .zomato(closestPlace.getPlace().getZomato())
+                    .tripadvisor(closestPlace.getPlace().getTripadvisor())
                     .build();
 
         }
