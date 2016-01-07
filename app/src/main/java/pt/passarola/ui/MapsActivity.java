@@ -2,6 +2,7 @@ package pt.passarola.ui;
 
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -37,7 +38,7 @@ import pt.passarola.model.MapItems;
 import pt.passarola.model.viewmodel.MixedPlaceViewModel;
 import pt.passarola.model.viewmodel.MixedViewModel;
 import pt.passarola.model.viewmodel.PlaceViewModel;
-import pt.passarola.ui.components.MarkerToolbarManager;
+import pt.passarola.ui.components.PlaceToolbarManager;
 import pt.passarola.ui.components.PassarolaToolbarManager;
 import pt.passarola.ui.recyclerview.OnBaseItemClickListener;
 import pt.passarola.ui.recyclerview.PlacesMixedAdapter;
@@ -53,7 +54,7 @@ import timber.log.Timber;
 public class MapsActivity extends DaggerableAppCompatActivity implements OnMapReadyCallback,
         MapPresenterCallback, GoogleMap.OnInfoWindowClickListener, PassarolaToolbarManager.OnTabSelectedListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
-        MarkerToolbarManager.OnMarkerToolbarClickListener {
+        PlaceToolbarManager.OnPlaceToolbarClickListener {
 
     private static final String BUNDLE_KEY_MAP_STATE = "bundle-map-state";
 
@@ -71,7 +72,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     private GoogleMap googleMap;
     private PlacesMixedAdapter adapter;
     private Map<String, Pair<PlaceViewModel, Marker>> markersMap;
-    private MarkerToolbarManager markerToolbarManager;
+    private PlaceToolbarManager placeToolbarManager;
     private int recyclerViewHeight;
 
     private OnBaseItemClickListener onPlaceItemClick = new OnBaseItemClickListener() {
@@ -113,7 +114,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         presenter.onStart(this);
         adapter.registerClickListeners(onPlaceItemClick, onTransparentItemClick);
         passarolaToolbarManager.registerListener(this);
-        markerToolbarManager.registerListener(this);
+        placeToolbarManager.registerListener(this);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         presenter.onStop();
         adapter.unregisterClickListeners();
         passarolaToolbarManager.unregisterListener();
-        markerToolbarManager.unregisterListener();
+        placeToolbarManager.unregisterListener();
         super.onStop();
     }
 
@@ -241,27 +242,39 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     private void setupMarkerToolbar() {
-        markerToolbarManager = new MarkerToolbarManager(this);
+        placeToolbarManager = new PlaceToolbarManager(this);
     }
 
     @Override
-    public void onMarkerToolbarIconClick(int position) {
-        switch (position){
-            case MarkerToolbarManager.ICON_1:
-                break;
+    public void onPlaceToolbarFacebookClick(String link) {
+        openLink(link);
+    }
 
-            case MarkerToolbarManager.ICON_2:
-                break;
+    @Override
+    public void onPlaceToolbarZomatoClick(String link) {
+        openLink(link);
+    }
 
-            default:
-                break;
-        }
+    @Override
+    public void onPlaceToolbarTripadvisorClick(String link) {
+        openLink(link);
+    }
+
+    @Override
+    public void onPlaceToolbarPhoneClick(String phone) {
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         setupGoogleMap();
+    }
+
+    private void openLink(String link){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(link));
+        startActivity(intent);
     }
 
     private void setupGoogleMap() {
@@ -385,7 +398,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     @Override
     public void onInfoWindowClick(Marker marker) {
         PlaceViewModel placeViewModel = getPlaceViewModelFromMap(marker);
-        markerToolbarManager.show(markerToolbarLayout, placeViewModel);
+        placeToolbarManager.show(markerToolbarLayout, placeViewModel);
         passarolaToolbarManager.show(false);
     }
 
@@ -397,7 +410,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     @Override
     public void onInfoWindowClose(Marker marker) {
         Timber.d("Closing " + marker.getId());
-        markerToolbarManager.hide();
+        placeToolbarManager.hide();
         passarolaToolbarManager.show(true);
     }
 

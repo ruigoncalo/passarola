@@ -37,4 +37,5 @@
     <color name="white">#ffffff</color>
     <color name="white_alpha_70">#bfffffff</color>
     <color name="grey_very_light">#f2f2f2</color>
+    <color name="grey_light">#e2e2e2</color>
 </resources>

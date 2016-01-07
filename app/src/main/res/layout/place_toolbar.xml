@@ -4,7 +4,7 @@
                 android:layout_height="wrap_content">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/layout_phone"
+        android:id="@+id/button_place_phone"
         android:src="@drawable/ic_phone"
         android:layout_margin="12dp"
         android:layout_alignParentEnd="true"
@@ -95,34 +95,46 @@
             android:padding="6dp">
 
             <TextView
-                android:id="@+id/icon_marker_1"
+                android:id="@+id/button_place_facebook"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:text="Facebook"
+                android:background="@drawable/selector_button_social"
                 android:textColor="@color/material_blue_grey_800"
                 android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 
 
             <TextView
-                android:id="@+id/icon_marker_2"
+                android:id="@+id/button_place_zomato"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:text="Zomato"
+                android:background="@drawable/selector_button_social"
                 android:textColor="@color/red_amber"
                 android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 
 
             <TextView
-                android:id="@+id/icon_marker_3"
+                android:id="@+id/button_place_tripadvisor"
                 android:gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/selector_button_social"
                 android:text="TripAdvisor"
                 android:textColor="@color/green_800"
                 android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/grey_light" />
+    <item  android:state_selected="true" android:drawable="@color/grey_light"/>
+    <item android:state_enabled="false" android:drawable="@color/material_deep_teal_200"/>
+    <item android:drawable="@android:color/transparent"/>
 </selector>
