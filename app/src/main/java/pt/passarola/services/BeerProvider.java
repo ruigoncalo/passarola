@@ -2,77 +2,78 @@ package pt.passarola.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import pt.passarola.model.Beer;
+import pt.passarola.model.MetaBeers;
+import pt.passarola.model.events.BeersErrorEvent;
 import pt.passarola.model.events.BeersSuccessEvent;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by ruigoncalo on 19/11/15.
  */
 public class BeerProvider {
 
+    private List<Beer> beers;
     private BusProvider busProvider;
+    private WebApiService webApiService;
+    private AtomicInteger requestsCounter;
 
-    public BeerProvider(BusProvider busProvider) {
+    public BeerProvider(BusProvider busProvider, WebApiService webApiService) {
         this.busProvider = busProvider;
+        this.webApiService = webApiService;
+        this.beers = new ArrayList<>();
+        this.requestsCounter = new AtomicInteger();
     }
 
-    public void getBeers() {
-        List<Beer> list = new ArrayList<>();
-        list.add(getBeerIpa());
-        list.add(getBeerDos());
-        list.add(getBeerAra());
-        list.add(getBeerBdi());
-        list.add(getBeerAlcateia());
-        list.add(getBeerHoney());
-
-        busProvider.post(new BeersSuccessEvent(list));
+    public void getBeers(){
+        if(beers.isEmpty()){
+            if(isLoading()) {
+                busProvider.post(new BeersErrorEvent(new Exception("Request is not completed")));
+            } else {
+                fetchBeers();
+            }
+        } else {
+            busProvider.post(new BeersSuccessEvent(beers));
+        }
     }
 
-    private Beer getBeerIpa() {
-        return new Beer(Beer.BEER_ID_IPA, "India Pale Ale", "India Pale Ale", "6,3%",
-                "Pale and Crystal malts, American hops.",
-                "Citrus and pine aroma from all American hops. Light refreshing body. " +
-                        "Hop flavor and a solid bitterness linger in the finish. " +
-                        "Bitterness refreshes the palate when paired with oily foods like Burgers, Pizza or Stirfry.");
+    private void fetchBeers() {
+        requestsCounter.incrementAndGet();
+        webApiService.getBeers(new Callback<MetaBeers>() {
+            @Override
+            public void success(MetaBeers metaBeers, Response response) {
+                requestsCounter.decrementAndGet();
+                addBeers(metaBeers.getData());
+                busProvider.post(new BeersSuccessEvent(beers));
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                requestsCounter.decrementAndGet();
+                busProvider.post(new BeersErrorEvent(error));
+            }
+        });
     }
 
-    private Beer getBeerDos() {
-        return new Beer(Beer.BEER_ID_DOS, "Double Oatmeal Stout", "Imperial Stout", "8%",
-                "Pale and Crystal malts, Flaked oats and Barley, Roasted malts, American hops.",
-                "Roasty aroma, chocolate, malty, oat sweetness. A smooth body, slight alcohol warmth. " +
-                        "All balanced by a healthy dose of bitterness from the hops. " +
-                        "Indulge with oysters, chocolate desserts, or all by itself.");
+    private void addBeers(List<Beer> beers){
+        // order beers
+        Set<Beer> beerSet = new TreeSet<>();
+        for(Beer beer : beers){
+            beerSet.add(beer);
+        }
+
+        for(Beer beer : beerSet){
+            this.beers.add(beer);
+        }
     }
 
-    private Beer getBeerAra() {
-        return new Beer(Beer.BEER_ID_ARA, "Amber Rye Ale", "Specialty Grain", "4,7%",
-                "Pilsner, Pale, Crystal, Rye and Roasted malts. German and American hops.",
-                "Light carbonation produces a smooth rich body. " +
-                        "Caramel malt sweetness balanced by the dry, spicy flavour of the rye malt. " +
-                        "Great session beer. Pairs easily with any food. " +
-                        "Excels with a big rich meaty lunch or an Arroz de Pato.");
-
-    }
-
-    private Beer getBeerBdi() {
-        return new Beer(Beer.BEER_ID_BDI, "Blind Date IPA", "India Pale Ale", "6,5%",
-                "Pale and Munich malts, American hops and Hop Oils.",
-                "Big citrus and pine aroma. Hoppy flavour with a long and bitter finish. Very balanced.");
-
-    }
-
-    private Beer getBeerAlcateia() {
-        return new Beer(Beer.BEER_ID_ALCATEIA, "Alcateia", "Grodziskie", "4,6%",
-                "Oak Smoked Wheat Malt, Pils Malt. Saaz Hops.",
-                "Hazy beer, with a delicate smokey aroma. Balanced acidity and highly refreshing.");
-    }
-
-    private Beer getBeerHoney() {
-        return new Beer(Beer.BEER_ID_HONEY, "Honey I'm Home", "Saison", "7,5%",
-                "Pale malt, Flaked Rye, Organic Honey. Summit and Mandarina Bavaria Hops. Belgian Yeast.",
-                "Golden to dark orange color with a thick but smooth body. " +
-                        "Taste is medium sweet and aromas of honey, spices and wood.");
+    private boolean isLoading(){
+        return requestsCounter.get() > 0;
     }
 }

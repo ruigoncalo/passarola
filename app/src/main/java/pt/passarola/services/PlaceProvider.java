@@ -40,6 +40,37 @@ public class PlaceProvider {
         requestsCounter = new AtomicInteger();
     }
 
+    public void getPlaces(){
+        if(places.isEmpty()){
+            if(isLoading()) {
+                busProvider.post(new PlacesErrorEvent(new Exception("Request is not completed")));
+            } else {
+                fetchPlaces();
+            }
+        } else {
+            busProvider.post(new PlacesSuccessEvent(places));
+        }
+    }
+
+    public void getClosestPlaces(Location location){
+        List<ClosestPlace> closestPlaces = new ArrayList<>();
+
+        Map<Place, Integer> placesOrderedByLocation =
+                getLocationMapOrderedByDistance(location, places);
+
+        int count = 0, max = 20;
+        for(Map.Entry<Place, Integer> entry : placesOrderedByLocation.entrySet()){
+            if(count >= max){
+                break;
+            }
+
+            count++;
+            closestPlaces.add(new ClosestPlace(entry.getKey(), entry.getValue()));
+        }
+
+        busProvider.post(new ClosestPlacesSuccessEvent(closestPlaces));
+    }
+
     private void fetchPlaces() {
         requestsCounter.incrementAndGet();
         webApiService.getPlaces(new Callback<MetaPlaces>() {
@@ -61,7 +92,6 @@ public class PlaceProvider {
     private void addPlaces(List<Place> places){
         this.places.addAll(places);
     }
-
 
     private boolean isLoading(){
         return requestsCounter.get() > 0;
@@ -100,37 +130,6 @@ public class PlaceProvider {
         locationsMap.putAll(map);
 
         return locationsMap;
-    }
-
-    public void getPlaces(){
-        if(places.isEmpty()){
-            if(isLoading()) {
-                busProvider.post(new PlacesErrorEvent(new Exception("Request is not completed")));
-            } else {
-                fetchPlaces();
-            }
-        } else {
-            busProvider.post(new PlacesSuccessEvent(places));
-        }
-    }
-
-    public void getClosestPlaces(Location location){
-        List<ClosestPlace> closestPlaces = new ArrayList<>();
-
-        Map<Place, Integer> placesOrderedByLocation =
-                getLocationMapOrderedByDistance(location, places);
-
-        int count = 0, max = 20;
-        for(Map.Entry<Place, Integer> entry : placesOrderedByLocation.entrySet()){
-            if(count >= max){
-                break;
-            }
-
-            count++;
-            closestPlaces.add(new ClosestPlace(entry.getKey(), entry.getValue()));
-        }
-
-        busProvider.post(new ClosestPlacesSuccessEvent(closestPlaces));
     }
 
     private class ValueComparator implements Comparator<Place> {
