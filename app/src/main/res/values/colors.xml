@@ -29,13 +29,22 @@
     <color name="green_500">#4CAF50</color>
     <color name="green_600">#43A047</color>
     <color name="green_800">#2E7D32</color>
+    <color name="green_dark">#5b5d05</color>
+    <color name="green_ipa">#4E650B</color>
+
     <color name="window_background">#FFF5F5F5</color>
     <color name="red_amber">#B20D35</color>
     <color name="yellow_stout">#EDCB04</color>
-    <color name="green_ipa">#4E650B</color>
+
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="white_alpha_70">#bfffffff</color>
-    <color name="grey_very_light">#f2f2f2</color>
-    <color name="grey_light">#e2e2e2</color>
+
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+
+    <color name="blue_facebook">#3B5998</color>
+    <color name="red_zomato">#CB202F</color>
+    <color name="green_tripadvisor">#60A348</color>
 </resources>
