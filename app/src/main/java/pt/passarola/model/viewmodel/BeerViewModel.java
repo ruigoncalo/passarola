@@ -1,9 +1,10 @@
 package pt.passarola.model.viewmodel;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.passarola.R;
 import pt.passarola.model.Beer;
 
 /**
@@ -17,7 +18,8 @@ public class BeerViewModel {
     private final String abv;
     private final String ingredients;
     private final String description;
-    private final int drawable;
+    private final String labelPic;
+    private final String labelPicSmall;
 
     private BeerViewModel(Builder builder){
         this.id = builder.id;
@@ -26,7 +28,8 @@ public class BeerViewModel {
         this.abv = builder.abv;
         this.ingredients = builder.ingredients;
         this.description = builder.description;
-        this.drawable = builder.drawable;
+        this.labelPic = builder.labelPic;
+        this.labelPicSmall = builder.labelPicSmall;
     }
 
     public String getId() {
@@ -53,8 +56,12 @@ public class BeerViewModel {
         return description;
     }
 
-    public int getDrawable() {
-        return drawable;
+    public String getLabelPic() {
+        return labelPic;
+    }
+
+    public String getLabelPicSmall() {
+        return labelPicSmall;
     }
 
     public static class Builder {
@@ -64,7 +71,8 @@ public class BeerViewModel {
         private String abv;
         private String ingredients;
         private String description;
-        private int drawable;
+        private String labelPic;
+        private String labelPicSmall;
 
         public Builder id(String id){
             this.id = id;
@@ -96,8 +104,13 @@ public class BeerViewModel {
             return this;
         }
 
-        public Builder drawable(int drawable){
-            this.drawable = drawable;
+        public Builder labelPic(String labelPic){
+            this.labelPic = labelPic;
+            return this;
+        }
+
+        public Builder labelPicSmall(String labelPicSmall){
+            this.labelPicSmall = labelPicSmall;
             return this;
         }
 
@@ -118,50 +131,21 @@ public class BeerViewModel {
         return result;
     }
 
+    @Nullable
     public static BeerViewModel createBeerViewModel(Beer beer){
-        return new BeerViewModel.Builder()
-                .id(beer.getId())
-                .name(beer.getName())
-                .style(beer.getStyle())
-                .abv(beer.getAbv())
-                .ingredients(beer.getIngredients())
-                .description(beer.getDescription())
-                .drawable(getBeerDrawable(beer.getId()))
-                .build();
-    }
-
-    private static int getBeerDrawable(String id){
-        int resource;
-        switch (id){
-            case Beer.BEER_ID_IPA:
-                resource = R.drawable.label_ipa_simple;
-                break;
-
-            case Beer.BEER_ID_DOS:
-                resource = R.drawable.label_dos_simple;
-                break;
-
-            case Beer.BEER_ID_ARA:
-                resource = R.drawable.label_ara_simple;
-                break;
-
-            case Beer.BEER_ID_BDI:
-                resource = R.drawable.label_bdipa_simple;
-                break;
-
-            case Beer.BEER_ID_ALCATEIA:
-                resource = R.drawable.label_alc_simple;
-                break;
-
-            case Beer.BEER_ID_HONEY:
-                resource = R.drawable.label_hih_simple;
-                break;
-
-            default: // TODO: get drawable error
-                resource = R.drawable.label_ipa_simple;
-                break;
+        if(beer != null) {
+            return new Builder()
+                    .id(beer.getId())
+                    .name(beer.getName())
+                    .style(beer.getStyle())
+                    .abv(beer.getAbv())
+                    .ingredients(beer.getIngredients())
+                    .description(beer.getMediumDescription())
+                    .labelPic(beer.getLabelPic())
+                    .labelPicSmall(beer.getLabelPicSmall())
+                    .build();
+        } else {
+            return null;
         }
-
-        return resource;
     }
 }
