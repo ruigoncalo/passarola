@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import javax.inject.Inject;
 
+import pt.passarola.services.BeerProvider;
 import pt.passarola.services.PlaceProvider;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 
@@ -17,9 +18,10 @@ import pt.passarola.services.dagger.DaggerableAppCompatActivity;
  */
 public class SplashActivity extends DaggerableAppCompatActivity {
 
-    private static final int LIFETIME_MS = 2000;
+    private static final int LIFETIME_MS = 1500;
 
     @Inject PlaceProvider placeProvider;
+    @Inject BeerProvider beerProvider;
 
     private Handler handler;
     private Runnable runnable;
@@ -44,6 +46,7 @@ public class SplashActivity extends DaggerableAppCompatActivity {
 
     private void initTasks(){
         placeProvider.getPlaces();
+        beerProvider.getBeers();
         handler = new Handler();
         runnable = new Runnable() {
             @Override

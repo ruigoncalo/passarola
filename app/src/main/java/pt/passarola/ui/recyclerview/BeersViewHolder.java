@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
@@ -45,6 +47,6 @@ public class BeersViewHolder extends RecyclerView.ViewHolder implements Composer
         textAbv.setText(beerViewModel.getAbv());
         textDescription.setText(beerViewModel.getDescription());
         textIngredients.setText(beerViewModel.getIngredients());
-        image.setImageResource(beerViewModel.getDrawable());
+        Picasso.with(image.getContext()).load(beerViewModel.getLabelPicSmall()).into(image);
     }
 }

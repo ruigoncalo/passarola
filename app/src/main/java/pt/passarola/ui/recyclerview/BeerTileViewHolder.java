@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
@@ -35,6 +37,6 @@ public class BeerTileViewHolder extends RecyclerView.ViewHolder implements Compo
 
     @Override
     public void compose(final BeerViewModel beerViewModel, final int position) {
-        image.setImageResource(beerViewModel.getDrawable());
+        Picasso.with(image.getContext()).load(beerViewModel.getLabelPicSmall()).into(image);
     }
 }

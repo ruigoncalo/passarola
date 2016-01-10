@@ -42,7 +42,7 @@ public class PlaceToolbarManager {
                 throw new NullPointerException("Place toolbar could not be instantiated");
             }
 
-            height = (int) ScreenInspector.dpToPx(placeToolbar.getContext(), 150);
+            height = (int) ScreenInspector.dpToPx(placeToolbar.getContext(), 190);
         }
 
         bind(placeViewModel);
@@ -75,9 +75,9 @@ public class PlaceToolbarManager {
         View facebookButton = placeToolbar.findViewById(R.id.button_place_facebook);
         if (facebookButton != null) {
             if(placeViewModel.getFacebook() == null || placeViewModel.getFacebook().isEmpty()){
-                facebookButton.setEnabled(false);
+                facebookButton.setVisibility(View.GONE);
             } else {
-                facebookButton.setEnabled(true);
+                facebookButton.setVisibility(View.VISIBLE);
                 facebookButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,9 +92,9 @@ public class PlaceToolbarManager {
         View zomatoButton = placeToolbar.findViewById(R.id.button_place_zomato);
         if (zomatoButton != null) {
             if(placeViewModel.getZomato() == null || placeViewModel.getZomato().isEmpty()){
-                zomatoButton.setEnabled(false);
+                zomatoButton.setVisibility(View.GONE);
             } else {
-                zomatoButton.setEnabled(true);
+                zomatoButton.setVisibility(View.VISIBLE);
                 zomatoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -109,9 +109,9 @@ public class PlaceToolbarManager {
         View tripadvisorButton = placeToolbar.findViewById(R.id.button_place_tripadvisor);
         if (tripadvisorButton != null) {
             if(placeViewModel.getTripadvisor() == null || placeViewModel.getTripadvisor().isEmpty()){
-                tripadvisorButton.setEnabled(false);
+                tripadvisorButton.setVisibility(View.GONE);
             } else {
-                tripadvisorButton.setEnabled(true);
+                tripadvisorButton.setVisibility(View.VISIBLE);
                 tripadvisorButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -125,15 +125,20 @@ public class PlaceToolbarManager {
 
         FloatingActionButton phoneButton =
                 (FloatingActionButton) placeToolbar.findViewById(R.id.button_place_phone);
-        if(phoneButton != null){
-            phoneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null){
-                        listener.onPlaceToolbarPhoneClick(placeViewModel.getTelephone());
+        if(phoneButton != null) {
+            if (placeViewModel.getTelephone() == null || placeViewModel.getTelephone().isEmpty()) {
+                phoneButton.setVisibility(View.GONE);
+            } else {
+                phoneButton.setVisibility(View.VISIBLE);
+                phoneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onPlaceToolbarPhoneClick(placeViewModel.getTelephone());
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
