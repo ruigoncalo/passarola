@@ -1,5 +1,6 @@
 package pt.passarola.services;
 
+import pt.passarola.model.MetaBeers;
 import pt.passarola.model.MetaPlaces;
 import pt.passarola.services.rest.RestApi;
 import retrofit.Callback;
@@ -19,4 +20,7 @@ public class WebApiService {
         restApi.getApiServices().getPlaces(callback);
     }
 
+    public void getBeers(Callback<MetaBeers> callback){
+        restApi.getApiServices().getBeers(callback);
+    }
 }

@@ -41,8 +41,8 @@ public class ServicesModule {
 
     @Provides
     @Singleton
-    BeerProvider providesBeerProvider(BusProvider busProvider){
-        return new BeerProvider(busProvider);
+    BeerProvider providesBeerProvider(BusProvider busProvider, WebApiService webApiService){
+        return new BeerProvider(busProvider, webApiService);
     }
 }
 

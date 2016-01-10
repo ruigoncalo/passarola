@@ -6,4 +6,5 @@ package pt.passarola.services.rest;
 public class Endpoints {
     public final static String baseUrl = "http://www.passarola.pt/api";
     public final static String places = "/places";
+    public final static String beers = "/beers";
 }
