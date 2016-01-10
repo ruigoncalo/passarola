@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,22 +41,20 @@ import pt.passarola.model.viewmodel.MixedPlaceViewModel;
 import pt.passarola.model.viewmodel.MixedViewModel;
 import pt.passarola.model.viewmodel.PlaceViewModel;
 import pt.passarola.ui.components.PlaceToolbarManager;
-import pt.passarola.ui.components.PassarolaToolbarManager;
+import pt.passarola.ui.components.PassarolaTabLayoutManager;
 import pt.passarola.ui.recyclerview.OnBaseItemClickListener;
 import pt.passarola.ui.recyclerview.PlacesMixedAdapter;
 import pt.passarola.utils.AnimatorManager;
 import pt.passarola.utils.FeedbackManager;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 import pt.passarola.utils.ScreenInspector;
-import timber.log.Timber;
 
 /**
  * Created by ruigoncalo on 18/12/15.
  */
 public class MapsActivity extends DaggerableAppCompatActivity implements OnMapReadyCallback,
-        MapPresenterCallback, GoogleMap.OnInfoWindowClickListener, PassarolaToolbarManager.OnTabSelectedListener,
-        GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
-        PlaceToolbarManager.OnPlaceToolbarClickListener {
+        MapPresenterCallback, GoogleMap.OnInfoWindowClickListener, PassarolaTabLayoutManager.OnTabSelectedListener,
+        GoogleMap.OnInfoWindowCloseListener, PlaceToolbarManager.OnPlaceToolbarClickListener {
 
     private static final String BUNDLE_KEY_MAP_STATE = "bundle-map-state";
 
@@ -65,22 +65,24 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     @Bind(R.id.tabs_layout) TabLayout tabLayout;
     @Bind(R.id.layout_coordinator) ViewGroup coordinatorLayout;
-    @Bind(R.id.layout_marker_toolbar) ViewGroup markerToolbarLayout;
+    @Bind(R.id.layout_place_toolbar) ViewGroup placeToolbarLayout;
 
-    private PassarolaToolbarManager passarolaToolbarManager;
+    private PassarolaTabLayoutManager passarolaTabLayoutManager;
     private Location currentLocation;
     private GoogleMap googleMap;
     private PlacesMixedAdapter adapter;
-    private Map<String, Pair<PlaceViewModel, Marker>> markersMap;
+    private Map<LatLng, Pair<PlaceViewModel, Marker>> markersMap;
     private PlaceToolbarManager placeToolbarManager;
     private int recyclerViewHeight;
+    private boolean isClosestPlaceMode;
+    private boolean isPlaceToolbarMode;
 
     private OnBaseItemClickListener onPlaceItemClick = new OnBaseItemClickListener() {
         @Override
         public void onBaseItemClick(int position, View view) {
             MixedPlaceViewModel mixedPlaceViewModel =
                     (MixedPlaceViewModel) adapter.getItem(position);
-            Marker marker = markersMap.get(mixedPlaceViewModel.getPlaceViewModel().getId()).second;
+            Marker marker = markersMap.get(mixedPlaceViewModel.getPlaceViewModel().getLatLng()).second;
             centerMapOnLatLng(marker.getPosition());
             marker.showInfoWindow();
             dismissClosestPlaces();
@@ -109,11 +111,27 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_about){
+            Intent intent = new Intent(this, AboutActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         presenter.onStart(this);
         adapter.registerClickListeners(onPlaceItemClick, onTransparentItemClick);
-        passarolaToolbarManager.registerListener(this);
+        passarolaTabLayoutManager.registerListener(this);
         placeToolbarManager.registerListener(this);
     }
 
@@ -137,7 +155,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     protected void onStop() {
         presenter.onStop();
         adapter.unregisterClickListeners();
-        passarolaToolbarManager.unregisterListener();
+        passarolaTabLayoutManager.unregisterListener();
         placeToolbarManager.unregisterListener();
         super.onStop();
     }
@@ -188,17 +206,17 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     private void setupTabs() {
-        passarolaToolbarManager = new PassarolaToolbarManager(tabLayout);
+        passarolaTabLayoutManager = new PassarolaTabLayoutManager(tabLayout);
     }
 
     @Override
     public void onTabSelected(int position) {
         switch (position) {
-            case PassarolaToolbarManager.TAB_CLOSEST_POSITION:
+            case PassarolaTabLayoutManager.TAB_CLOSEST_POSITION:
                 onClosestTabClick();
                 break;
 
-            case PassarolaToolbarManager.TAB_PLACES_POSITION:
+            case PassarolaTabLayoutManager.TAB_PLACES_POSITION:
                 onPlacesTabClick();
                 break;
 
@@ -262,7 +280,9 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
 
     @Override
     public void onPlaceToolbarPhoneClick(String phone) {
-
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("tel:" + phone));
+        startActivity(intent);
     }
 
     @Override
@@ -284,7 +304,6 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         googleMap.getUiSettings().setAllGesturesEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.setOnInfoWindowClickListener(this);
-        googleMap.setOnInfoWindowLongClickListener(this);
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -305,7 +324,7 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
             for (PlaceViewModel placeViewModel : places) {
                 Marker marker = googleMap.addMarker(createMarkerOption(placeViewModel));
                 boundsBuilder.include(marker.getPosition());
-                markersMap.put(placeViewModel.getId(), new Pair<>(placeViewModel, marker));
+                markersMap.put(placeViewModel.getLatLng(), new Pair<>(placeViewModel, marker));
             }
             LatLngBounds bounds = boundsBuilder.build();
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 160);
@@ -320,7 +339,6 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         return new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 .position(placeViewModel.getLatLng())
-                .snippet("Click me if you dare, Indiana!")
                 .title(placeViewModel.getName());
     }
 
@@ -358,15 +376,17 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     private void showRecyclerView(boolean show) {
-        passarolaToolbarManager.show(!show);
+        passarolaTabLayoutManager.show(!show);
 
         if (show) {
+            isClosestPlaceMode = true;
             recyclerView.setTranslationY(recyclerViewHeight);
             if(mapView != null){
                 AnimatorManager.fadeOutPartial(mapView);
             }
             AnimatorManager.slideInView(recyclerView, 0);
         } else {
+            isClosestPlaceMode = false;
             if(mapView != null){
                 AnimatorManager.fadeInPartial(mapView);
             }
@@ -386,8 +406,8 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
 
     @Nullable
     private PlaceViewModel getPlaceViewModelFromMap(Marker marker){
-        for(Map.Entry<String, Pair<PlaceViewModel, Marker>> entry : markersMap.entrySet()){
-            if(entry.getValue().second.getId().equals(marker.getId())){
+        for(Map.Entry<LatLng, Pair<PlaceViewModel, Marker>> entry : markersMap.entrySet()){
+            if(entry.getValue().second.getPosition().equals(marker.getPosition())){
                 return entry.getValue().first;
             }
         }
@@ -397,21 +417,25 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        PlaceViewModel placeViewModel = getPlaceViewModelFromMap(marker);
-        placeToolbarManager.show(markerToolbarLayout, placeViewModel);
-        passarolaToolbarManager.show(false);
-    }
-
-    @Override
-    public void onInfoWindowLongClick(Marker marker) {
-        Timber.d("Long click " + marker.getId());
+        showPlaceToolbar(marker);
     }
 
     @Override
     public void onInfoWindowClose(Marker marker) {
-        Timber.d("Closing " + marker.getId());
+        dismissPlaceToolbar();
+    }
+
+    private void showPlaceToolbar(Marker marker){
+        PlaceViewModel placeViewModel = getPlaceViewModelFromMap(marker);
+        placeToolbarManager.show(placeToolbarLayout, placeViewModel);
+        passarolaTabLayoutManager.show(false);
+        isPlaceToolbarMode = true;
+    }
+
+    private void dismissPlaceToolbar(){
         placeToolbarManager.hide();
-        passarolaToolbarManager.show(true);
+        passarolaTabLayoutManager.show(true);
+        isPlaceToolbarMode = false;
     }
 
     @Override
@@ -472,8 +496,10 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
 
     @Override
     public void onBackPressed() {
-        if (recyclerView.getVisibility() == View.VISIBLE) {
+        if (isClosestPlaceMode) {
             dismissClosestPlaces();
+        } else if(isPlaceToolbarMode) {
+            dismissPlaceToolbar();
         } else {
             super.onBackPressed();
         }
