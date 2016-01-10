@@ -109,7 +109,7 @@
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="play-services-location-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="javawriter-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-23.0.0" level="project" />
   </component>
 </module>
