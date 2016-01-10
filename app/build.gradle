@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+// Manifest version information!
+def versionMajor = 0
+def versionMinor = 2
+def versionPatch = 0
+def versionBuild = 0
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -8,8 +14,9 @@ android {
         applicationId "pt.passarola"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "0.1"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
     }
     buildTypes {
         release {
