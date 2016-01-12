@@ -3,15 +3,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_place_phone"
-        android:src="@drawable/ic_phone"
-        android:layout_margin="12dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
@@ -144,5 +135,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_place_phone"
+        android:src="@drawable/ic_phone"
+        android:layout_margin="12dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

@@ -36,7 +36,7 @@ public class PlaceToolbarManager {
 
     public void show(ViewGroup anchor, PlaceViewModel placeViewModel) {
         if (placeToolbar == null) {
-            placeToolbar = LayoutInflater.from(context).inflate(R.layout.place_toolbar, anchor, true);
+            placeToolbar = LayoutInflater.from(context).inflate(R.layout.layout_place_detail, anchor, true);
 
             if (placeToolbar == null) {
                 throw new NullPointerException("Place toolbar could not be instantiated");
