@@ -3,6 +3,8 @@ package pt.passarola;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class App extends Application implements Daggerable {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         buildDebugOptions();
         buildObjectGraph();
     }
