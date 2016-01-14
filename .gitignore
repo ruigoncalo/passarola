@@ -8,4 +8,8 @@
 
 # Local files
 build.properties
+debug.keystore
 release.keystore
+fabric.properties
+gradle.properties
+com_crashlytics_export_strings.xml
