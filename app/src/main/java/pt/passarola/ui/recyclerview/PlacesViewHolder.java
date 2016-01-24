@@ -8,33 +8,27 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.PlaceViewModel;
+import pt.passarola.ui.components.PlaceToolbarManager;
 
 /**
  * Created by ruigoncalo on 19/11/15.
  */
-public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Composer<PlaceViewModel>, View.OnClickListener {
+public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Composer<PlaceViewModel> {
 
     @Bind(R.id.text_name) TextView nameTextView;
     @Bind(R.id.text_address) TextView addressTextView;
     @Bind(R.id.text_council) TextView councilTextView;
     @Bind(R.id.text_country) TextView countryTextView;
-    @Bind(R.id.text_telephone) TextView telephoneTextView;
+    @Bind(R.id.button_place_facebook) View facebookButton;
+    @Bind(R.id.button_place_zomato) View zomatoButton;
+    @Bind(R.id.button_place_tripadvisor) View tripadvisorButton;
 
-    private OnBaseItemClickListener onItemClickListener;
+    private PlaceToolbarManager.OnPlaceToolbarClickListener listener;
 
-    public PlacesViewHolder(View view, OnBaseItemClickListener onItemClickListener) {
+    public PlacesViewHolder(View view, PlaceToolbarManager.OnPlaceToolbarClickListener l) {
         super(view);
-        this.onItemClickListener = onItemClickListener;
+        this.listener = l;
         ButterKnife.bind(this, view);
-        view.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        int position = getLayoutPosition();
-        if (onItemClickListener != null) {
-            onItemClickListener.onBaseItemClick(position, view);
-        }
     }
 
     @Override
@@ -43,6 +37,43 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
         addressTextView.setText(placeViewModel.getFullAddress());
         councilTextView.setText(placeViewModel.getCouncil());
         countryTextView.setText(placeViewModel.getCountry());
-        telephoneTextView.setText(placeViewModel.getTelephone());
+
+        setClickListener(facebookButton, placeViewModel.getFacebook(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onPlaceToolbarFacebookClick(placeViewModel.getFacebook());
+                }
+            }
+        });
+
+        setClickListener(zomatoButton, placeViewModel.getZomato(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onPlaceToolbarZomatoClick(placeViewModel.getZomato());
+                }
+            }
+        });
+
+        setClickListener(tripadvisorButton, placeViewModel.getTripadvisor(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onPlaceToolbarTripadvisorClick(placeViewModel.getTripadvisor());
+                }
+            }
+        });
+
+
+    }
+
+    private void setClickListener(View view, String link, View.OnClickListener listener){
+        if(link == null || link.isEmpty()){
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
+            view.setOnClickListener(listener);
+        }
     }
 }

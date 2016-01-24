@@ -12,13 +12,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.MapItems;
+import pt.passarola.ui.components.PlaceToolbarManager;
 import pt.passarola.ui.recyclerview.PlacesAdapter;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
+import pt.passarola.utils.Utils;
 
 /**
  * Created by ruigoncalo on 23/10/15.
  */
-public class PlacesActivity extends DaggerableAppCompatActivity implements PlacesPresenterCallback {
+public class PlacesActivity extends DaggerableAppCompatActivity
+        implements PlacesPresenterCallback, PlaceToolbarManager.OnPlaceToolbarClickListener {
 
     @Inject PlacesPresenter presenter;
 
@@ -42,6 +45,7 @@ public class PlacesActivity extends DaggerableAppCompatActivity implements Place
     protected void onStart() {
         super.onStart();
         presenter.onStart(this);
+        adapter.registerPlaceToolbarClickListener(this);
     }
 
     @Override
@@ -53,6 +57,7 @@ public class PlacesActivity extends DaggerableAppCompatActivity implements Place
     @Override
     protected void onStop() {
         presenter.onStop();
+        adapter.unregisterPlaceToolbarClickListener();
         super.onStop();
     }
 
@@ -104,6 +109,26 @@ public class PlacesActivity extends DaggerableAppCompatActivity implements Place
 
     @Override
     public void isLoading(boolean loading) {
+
+    }
+
+    @Override
+    public void onPlaceToolbarFacebookClick(String link) {
+        Utils.openLink(this, link);
+    }
+
+    @Override
+    public void onPlaceToolbarZomatoClick(String link) {
+        Utils.openLink(this, link);
+    }
+
+    @Override
+    public void onPlaceToolbarTripadvisorClick(String link) {
+        Utils.openLink(this, link);
+    }
+
+    @Override
+    public void onPlaceToolbarPhoneClick(String phone) {
 
     }
 }
