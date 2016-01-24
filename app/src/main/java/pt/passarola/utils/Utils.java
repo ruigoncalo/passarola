@@ -1,6 +1,8 @@
 package pt.passarola.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -61,6 +63,29 @@ public class Utils {
         }
 
         return result;
+    }
+
+    /**
+     * Open intent with data
+     *
+     * @param context used to start activity
+     * @param link intent's data
+     */
+    public static void openLink(Context context, String link) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(link));
+        context.startActivity(intent);
+    }
+
+    /**
+     * Open contact screen by providing a phone number
+     * @param context used to start activity
+     * @param phoneNumber data to show on contact screen
+     */
+    public static void openContact(Context context, String phoneNumber){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        context.startActivity(intent);
     }
 
 }
