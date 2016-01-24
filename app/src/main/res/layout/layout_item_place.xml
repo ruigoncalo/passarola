@@ -60,13 +60,61 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_telephone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/green_600"
-            android:textSize="14sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/button_place_facebook"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:text="Facebook"
+                android:background="@drawable/selector_button_social"
+                android:textColor="@color/blue_facebook"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/button_place_zomato"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:text="Zomato"
+                android:textStyle="bold"
+                android:background="@drawable/selector_button_social"
+                android:textColor="@color/red_zomato"
+                android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/button_place_tripadvisor"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:background="@drawable/selector_button_social"
+                android:textStyle="bold"
+                android:text="TripAdvisor"
+                android:textColor="@color/green_tripadvisor"
+                android:textSize="14sp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textAllCaps="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
