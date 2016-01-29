@@ -45,6 +45,8 @@
     <color name="grey_300">#E0E0E0</color>
     <color name="grey_400">#BDBDBD</color>
 
+    <color name="yellow_untappd">#FECB01</color>
+    <color name="blue_ratebeer">#0097CD</color>
     <color name="blue_facebook">#3B5998</color>
     <color name="red_zomato">#CB202F</color>
     <color name="green_tripadvisor">#60A348</color>

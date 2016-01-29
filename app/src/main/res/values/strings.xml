@@ -5,20 +5,22 @@
     </string>
 
     <string name="app_name">Passarola</string>
+    <string name="passarola_brewing">Passarola Brewing</string>
     <string name="about">About</string>
     <string name="closest_places">Closest to you</string>
-    <string name="places_available">Places</string>
     <string name="places">Places</string>
+    <string name="total_places">Currently in %s places</string>
     <string name="close">Close</string>
     <string name="beers">Beers</string>
     <string name="more">More</string>
-
-    <string name="is_far_from_you">is %s far from you</string>
+    <string name="best_brewing_around">The best Brewing around</string>
+    <string name="is_away_from_you">is %s away from you</string>
     <string name="far_from_you"> far from you</string>
 
     <string name="email_passarola">info@passarola.pt</string>
     <string name="facebook">Facebook</string>
     <string name="send_email_using">Send email using&#8230;</string>
+    <string name="taste_it_etc">Taste it, rate it and share it.</string>
 
     <!-- error -->
     <string name="error_settings">Settings</string>

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,7 @@ import timber.log.Timber;
 public class App extends Application implements Daggerable {
 
     private ObjectGraph objectGraph;
+
 
     public static App obtain(Context context) {
         return (App) context.getApplicationContext();
@@ -57,4 +59,5 @@ public class App extends Application implements Daggerable {
             Timber.plant(new Timber.DebugTree());
         }
     }
+
 }

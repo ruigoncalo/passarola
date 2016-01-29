@@ -3,7 +3,6 @@ package pt.passarola.ui;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -14,17 +13,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.BeerViewModel;
+import pt.passarola.services.tracker.TrackerManager;
 import pt.passarola.ui.recyclerview.BeersAdapter;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
+import pt.passarola.utils.Utils;
 
 /**
  * Created by ruigoncalo on 22/10/15.
  */
-public class BeersActivity extends DaggerableAppCompatActivity implements BeersPresenterCallback{
+public class BeersActivity extends DaggerableAppCompatActivity
+        implements BeersPresenterCallback, SocialBeerListener {
 
     @Inject BeersPresenter presenter;
+    @Inject TrackerManager trackerManager;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
 
     private BeersAdapter adapter;
@@ -41,7 +43,6 @@ public class BeersActivity extends DaggerableAppCompatActivity implements BeersP
     }
 
     private void setupToolbar() {
-        setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.beers);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,6 +80,7 @@ public class BeersActivity extends DaggerableAppCompatActivity implements BeersP
     protected void onStart() {
         super.onStart();
         presenter.onStart(this);
+        adapter.registerListener(this);
     }
 
     @Override
@@ -90,6 +92,7 @@ public class BeersActivity extends DaggerableAppCompatActivity implements BeersP
     @Override
     protected void onStop() {
         presenter.onStop();
+        adapter.unregisterListener();
         super.onStop();
     }
 
@@ -107,5 +110,21 @@ public class BeersActivity extends DaggerableAppCompatActivity implements BeersP
     @Override
     public void isLoading(boolean loading) {
 
+    }
+
+    @Override
+    public void onRateBeerClick(String link) {
+        Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_BEER_RATEBEER, "Beer Url", link);
+    }
+
+    @Override
+    public void onUntappdClick(String link) {
+        Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_BEER_UNTAPPD, "Beer Url", link);
     }
 }

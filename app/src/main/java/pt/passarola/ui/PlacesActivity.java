@@ -3,7 +3,6 @@ package pt.passarola.ui;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import javax.inject.Inject;
@@ -12,7 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.MapItems;
-import pt.passarola.ui.components.PlaceToolbarManager;
+import pt.passarola.services.tracker.TrackerManager;
 import pt.passarola.ui.recyclerview.PlacesAdapter;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
 import pt.passarola.utils.Utils;
@@ -21,11 +20,11 @@ import pt.passarola.utils.Utils;
  * Created by ruigoncalo on 23/10/15.
  */
 public class PlacesActivity extends DaggerableAppCompatActivity
-        implements PlacesPresenterCallback, PlaceToolbarManager.OnPlaceToolbarClickListener {
+        implements PlacesPresenterCallback, SocialPlacesListener {
 
     @Inject PlacesPresenter presenter;
+    @Inject TrackerManager trackerManager;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
 
     private PlacesAdapter adapter;
@@ -45,7 +44,7 @@ public class PlacesActivity extends DaggerableAppCompatActivity
     protected void onStart() {
         super.onStart();
         presenter.onStart(this);
-        adapter.registerPlaceToolbarClickListener(this);
+        adapter.registerListener(this);
     }
 
     @Override
@@ -57,15 +56,21 @@ public class PlacesActivity extends DaggerableAppCompatActivity
     @Override
     protected void onStop() {
         presenter.onStop();
-        adapter.unregisterPlaceToolbarClickListener();
+        adapter.unregisterListener();
         super.onStop();
     }
 
     private void setupToolbar() {
-        setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(R.string.places_available);
+            getSupportActionBar().setTitle(R.string.places);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void setSubtitle(int total){
+        if(getSupportActionBar() != null){
+            String totalText = String.valueOf(total);
+            getSupportActionBar().setSubtitle(getString(R.string.total_places, totalText));
         }
     }
 
@@ -98,6 +103,7 @@ public class PlacesActivity extends DaggerableAppCompatActivity
 
     @Override
     public void onPlacesSuccessEvent(MapItems items) {
+        setSubtitle(items.getPlaces().size());
         adapter.setItemList(items.getPlaces());
         hasItems = true;
     }
@@ -112,23 +118,33 @@ public class PlacesActivity extends DaggerableAppCompatActivity
 
     }
 
+
     @Override
-    public void onPlaceToolbarFacebookClick(String link) {
+    public void onFacebookClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_ALL_PLACES_FACEBOOK, "Facebook Url", link);
     }
 
     @Override
-    public void onPlaceToolbarZomatoClick(String link) {
+    public void onZomatoClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_ALL_PLACES_ZOMATO, "Zomato Url", link);
     }
 
     @Override
-    public void onPlaceToolbarTripadvisorClick(String link) {
+    public void onTripadvisorClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_ALL_PLACES_TRIPADVISOR, "Tripadvisor Url", link);
     }
 
     @Override
-    public void onPlaceToolbarPhoneClick(String phone) {
+    public void onPhoneClick(String phone) {
 
     }
 }

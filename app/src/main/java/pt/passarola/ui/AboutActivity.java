@@ -3,14 +3,15 @@ package pt.passarola.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import butterknife.Bind;
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pt.passarola.R;
 import pt.passarola.services.dagger.DaggerableAppCompatActivity;
+import pt.passarola.services.tracker.TrackerManager;
 
 /**
  * Created by ruigoncalo on 22/10/15.
@@ -19,7 +20,7 @@ public class AboutActivity extends DaggerableAppCompatActivity {
 
     private static final String FB_PASSAROLA_ID = "713214482083435";
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Inject TrackerManager trackerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class AboutActivity extends DaggerableAppCompatActivity {
     }
 
     private void setupToolbar() {
-        setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(R.string.about);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,6 +54,9 @@ public class AboutActivity extends DaggerableAppCompatActivity {
         emailIntent.setType("vnd.android.cursor.item/email");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {"info@passarola.pt"});
         startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email_using)));
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_ABOUT_EMAIL);
     }
 
     /**
@@ -72,5 +75,8 @@ public class AboutActivity extends DaggerableAppCompatActivity {
                     Uri.parse("https://www.facebook.com/" + FB_PASSAROLA_ID));
             startActivity(intent);
         }
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_ABOUT_FACEBOOK);
     }
 }

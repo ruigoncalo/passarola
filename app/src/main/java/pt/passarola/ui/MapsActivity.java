@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +42,7 @@ import pt.passarola.model.MapItems;
 import pt.passarola.model.viewmodel.MixedPlaceViewModel;
 import pt.passarola.model.viewmodel.MixedViewModel;
 import pt.passarola.model.viewmodel.PlaceViewModel;
+import pt.passarola.services.tracker.TrackerManager;
 import pt.passarola.ui.components.PlaceToolbarManager;
 import pt.passarola.ui.components.PassarolaTabLayoutManager;
 import pt.passarola.ui.recyclerview.OnBaseItemClickListener;
@@ -59,13 +59,13 @@ import pt.passarola.utils.Utils;
 public class MapsActivity extends DaggerableAppCompatActivity implements OnMapReadyCallback,
         MapPresenterCallback, GoogleMap.OnInfoWindowClickListener,
         PassarolaTabLayoutManager.OnTabSelectedListener, GoogleMap.OnInfoWindowCloseListener,
-        PlaceToolbarManager.OnPlaceToolbarClickListener, GoogleMap.OnMarkerClickListener {
+        SocialPlacesListener, GoogleMap.OnMarkerClickListener {
 
     private static final String BUNDLE_KEY_MAP_STATE = "bundle-map-state";
 
     @Inject MapsPresenter presenter;
+    @Inject TrackerManager trackerManager;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.map_view) MapView mapView;
     @Bind(R.id.recycler_view) RecyclerView recyclerView;
     @Bind(R.id.tabs_layout) TabLayout tabLayout;
@@ -91,6 +91,10 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
             centerMapOnLatLng(marker.getPosition());
             marker.showInfoWindow();
             dismissClosestPlaces();
+
+            //Tracking Event
+            trackerManager.trackEvent(TrackerManager.EVENT_CLICK_PLACE_CLOSEST, "Place Name",
+                    mixedPlaceViewModel.getPlaceViewModel().getName());
         }
     };
 
@@ -194,13 +198,12 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     private void setupToolbar() {
-        setSupportActionBar(toolbar);
         resetToolbarTitle();
     }
 
     private void resetToolbarTitle() {
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setTitle(R.string.passarola_brewing);
         }
     }
 
@@ -237,18 +240,27 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
         } else {
             refreshLocation();
         }
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_TAB_CLOSEST);
     }
 
     private void onPlacesTabClick() {
         Intent intent = new Intent(this, PlacesActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_TAB_PLACES);
     }
 
     private void onBeersTabClick() {
         Intent intent = new Intent(this, BeersActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_TAB_BEERS);
     }
 
     private void setupMap(Bundle savedInstanceState) {
@@ -269,23 +281,35 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
     }
 
     @Override
-    public void onPlaceToolbarFacebookClick(String link) {
+    public void onFacebookClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_PLACE_FACEBOOK, "Facebook Url", link);
     }
 
     @Override
-    public void onPlaceToolbarZomatoClick(String link) {
+    public void onZomatoClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_PLACE_ZOMATO, "Zomato Url", link);
     }
 
     @Override
-    public void onPlaceToolbarTripadvisorClick(String link) {
+    public void onTripadvisorClick(String link) {
         Utils.openLink(this, link);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_PLACE_TRIPADVISOR, "Tripadvisor Url", link);
     }
 
     @Override
-    public void onPlaceToolbarPhoneClick(String phone) {
+    public void onPhoneClick(String phone) {
         Utils.openContact(this, phone);
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_PLACE_PHONE, "Phone", phone);
     }
 
     @Override
@@ -445,12 +469,19 @@ public class MapsActivity extends DaggerableAppCompatActivity implements OnMapRe
             }
         });
 
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_MARKER, "Marker Title", marker.getTitle());
+
         return false;
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
         showPlaceToolbar(marker);
+        trackerManager.trackEvent("");
+
+        //Tracking Event
+        trackerManager.trackEvent(TrackerManager.EVENT_CLICK_INFO_WINDOW, "Marker Title", marker.getTitle());
     }
 
     @Override
