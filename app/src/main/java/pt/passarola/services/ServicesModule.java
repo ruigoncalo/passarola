@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pt.passarola.services.rest.RestApi;
+import pt.passarola.services.tracker.TrackerManager;
 
 /**
  * Created by ruigoncalo on 22/10/15.
@@ -43,6 +44,12 @@ public class ServicesModule {
     @Singleton
     BeerProvider providesBeerProvider(BusProvider busProvider, WebApiService webApiService){
         return new BeerProvider(busProvider, webApiService);
+    }
+
+    @Provides
+    @Singleton
+    TrackerManager providesTrackerManager(){
+        return new TrackerManager();
     }
 }
 
