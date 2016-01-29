@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by ruigoncalo on 14/01/16.
  */
-public class FabricTracker {
+public class TrackerManager {
 
     public void trackEvent(String eventName){
         Answers.getInstance().logCustom(new CustomEvent(eventName));
