@@ -8,30 +8,33 @@ import android.view.ViewGroup;
 
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.BeerViewModel;
+import pt.passarola.ui.SocialBeerListener;
 
 /**
  * Created by ruigoncalo on 19/11/15.
  */
 public class BeersAdapter extends BaseAdapter<BeerViewModel, BeersViewHolder> {
 
-    private OnBaseItemClickListener onBaseItemClickListener;
+    private SocialBeerListener listener;
 
     public BeersAdapter(Context context){
         super(context);
     }
 
-    public void registerBaseItemClickListener(OnBaseItemClickListener onBaseItemClickListener){
-        this.onBaseItemClickListener = onBaseItemClickListener;
+
+    public void registerListener(SocialBeerListener listener){
+        this.listener = listener;
     }
 
-    public void unregisterBaseItemClickListener(){
-        this.onBaseItemClickListener = null;
+    public void unregisterListener(){
+        this.listener = null;
     }
 
     @Override
     public BeersViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View editView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_beer, viewGroup, false);
-        return new BeersViewHolder(editView, onBaseItemClickListener);
+        View editView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.layout_item_beer, viewGroup, false);
+        return new BeersViewHolder(editView, listener);
     }
 
     @Override

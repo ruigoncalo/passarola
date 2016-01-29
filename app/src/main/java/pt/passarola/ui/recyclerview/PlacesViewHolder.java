@@ -8,7 +8,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.PlaceViewModel;
-import pt.passarola.ui.components.PlaceToolbarManager;
+import pt.passarola.ui.SocialPlacesListener;
 
 /**
  * Created by ruigoncalo on 19/11/15.
@@ -23,9 +23,9 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
     @Bind(R.id.button_place_zomato) View zomatoButton;
     @Bind(R.id.button_place_tripadvisor) View tripadvisorButton;
 
-    private PlaceToolbarManager.OnPlaceToolbarClickListener listener;
+    private SocialPlacesListener listener;
 
-    public PlacesViewHolder(View view, PlaceToolbarManager.OnPlaceToolbarClickListener l) {
+    public PlacesViewHolder(View view, SocialPlacesListener l) {
         super(view);
         this.listener = l;
         ButterKnife.bind(this, view);
@@ -42,7 +42,7 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPlaceToolbarFacebookClick(placeViewModel.getFacebook());
+                    listener.onFacebookClick(placeViewModel.getFacebook());
                 }
             }
         });
@@ -51,7 +51,7 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPlaceToolbarZomatoClick(placeViewModel.getZomato());
+                    listener.onZomatoClick(placeViewModel.getZomato());
                 }
             }
         });
@@ -60,7 +60,7 @@ public class PlacesViewHolder  extends RecyclerView.ViewHolder implements Compos
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPlaceToolbarTripadvisorClick(placeViewModel.getTripadvisor());
+                    listener.onTripadvisorClick(placeViewModel.getTripadvisor());
                 }
             }
         });

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import pt.passarola.R;
 import pt.passarola.model.viewmodel.PlaceViewModel;
+import pt.passarola.ui.SocialPlacesListener;
 import pt.passarola.utils.AnimatorManager;
 import pt.passarola.utils.ScreenInspector;
 
@@ -19,14 +20,14 @@ public class PlaceToolbarManager {
 
     private Context context;
     private View placeToolbar;
-    private OnPlaceToolbarClickListener listener;
+    private SocialPlacesListener listener;
     private int height;
 
     public PlaceToolbarManager(Context context) {
         this.context = context;
     }
 
-    public void registerListener(OnPlaceToolbarClickListener listener) {
+    public void registerListener(SocialPlacesListener listener) {
         this.listener = listener;
     }
 
@@ -82,7 +83,7 @@ public class PlaceToolbarManager {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onPlaceToolbarFacebookClick(placeViewModel.getFacebook());
+                            listener.onFacebookClick(placeViewModel.getFacebook());
                         }
                     }
                 });
@@ -99,7 +100,7 @@ public class PlaceToolbarManager {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onPlaceToolbarZomatoClick(placeViewModel.getZomato());
+                            listener.onZomatoClick(placeViewModel.getZomato());
                         }
                     }
                 });
@@ -116,7 +117,7 @@ public class PlaceToolbarManager {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onPlaceToolbarTripadvisorClick(placeViewModel.getTripadvisor());
+                            listener.onTripadvisorClick(placeViewModel.getTripadvisor());
                         }
                     }
                 });
@@ -134,19 +135,12 @@ public class PlaceToolbarManager {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onPlaceToolbarPhoneClick(placeViewModel.getTelephone());
+                            listener.onPhoneClick(placeViewModel.getTelephone());
                         }
                     }
                 });
             }
         }
-    }
-
-    public interface OnPlaceToolbarClickListener {
-        void onPlaceToolbarFacebookClick(String link);
-        void onPlaceToolbarZomatoClick(String link);
-        void onPlaceToolbarTripadvisorClick(String link);
-        void onPlaceToolbarPhoneClick(String phone);
     }
 
 }

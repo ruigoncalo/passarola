@@ -20,6 +20,8 @@ public class BeerViewModel {
     private final String description;
     private final String labelPic;
     private final String labelPicSmall;
+    private final String rateBeerUrl;
+    private final String untappdUrl;
 
     private BeerViewModel(Builder builder){
         this.id = builder.id;
@@ -30,6 +32,8 @@ public class BeerViewModel {
         this.description = builder.description;
         this.labelPic = builder.labelPic;
         this.labelPicSmall = builder.labelPicSmall;
+        this.rateBeerUrl = builder.rateBeerUrl;
+        this.untappdUrl = builder.untappdUrl;
     }
 
     public String getId() {
@@ -64,6 +68,14 @@ public class BeerViewModel {
         return labelPicSmall;
     }
 
+    public String getRateBeerUrl() {
+        return rateBeerUrl;
+    }
+
+    public String getUntappdUrl() {
+        return untappdUrl;
+    }
+
     public static class Builder {
         private String id;
         private String name;
@@ -73,6 +85,8 @@ public class BeerViewModel {
         private String description;
         private String labelPic;
         private String labelPicSmall;
+        private String rateBeerUrl;
+        private String untappdUrl;
 
         public Builder id(String id){
             this.id = id;
@@ -114,6 +128,16 @@ public class BeerViewModel {
             return this;
         }
 
+        public Builder rateBeerUrl(String rateBeerUrl){
+            this.rateBeerUrl = rateBeerUrl;
+            return this;
+        }
+
+        public Builder untappdUrl(String untappdUrl){
+            this.untappdUrl = untappdUrl;
+            return this;
+        }
+
         public BeerViewModel build(){
             return new BeerViewModel(this);
         }
@@ -143,6 +167,8 @@ public class BeerViewModel {
                     .description(beer.getMediumDescription())
                     .labelPic(beer.getLabelPic())
                     .labelPicSmall(beer.getLabelPicSmall())
+                    .rateBeerUrl(beer.getRatebeerUrl())
+                    .untappdUrl(beer.getUntappdUrl())
                     .build();
         } else {
             return null;

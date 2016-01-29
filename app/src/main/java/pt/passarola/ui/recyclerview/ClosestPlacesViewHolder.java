@@ -46,7 +46,7 @@ public class ClosestPlacesViewHolder extends RecyclerView.ViewHolder
         addressTextView.setText(placeViewModel.getFullAddress());
 
         String distance = placeViewModel.getName()
-                + " " + String.format(context.getString(R.string.is_far_from_you),
+                + " " + String.format(context.getString(R.string.is_away_from_you),
                 Utils.getNormalizedDistance(placeViewModel.getDistance()));
 
         distanceTextView.setText(distance);
