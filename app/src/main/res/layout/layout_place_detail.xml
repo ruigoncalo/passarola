@@ -3,10 +3,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/header"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
     <LinearLayout
-        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_below="@+id/header"
         android:background="@color/grey_100"
         android:orientation="vertical">
 
