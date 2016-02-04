@@ -34,6 +34,12 @@ public class TrackerManager {
     }
 
     public void trackEvent(String eventName, String key, String value){
+
+        //truncate value to 100 chars
+        if(value.length() > 100) {
+            value = value.substring(0, 99);
+        }
+
         CustomEvent customEvent = new CustomEvent(eventName);
         customEvent.putCustomAttribute(key, value);
 
