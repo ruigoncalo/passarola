@@ -5,8 +5,6 @@ Android app for the best brewing around
 
 [Passarola Brewing online][1]
 
-![](http://passarola.pt/pics/main.jpg)
-
 License
 --------
 
