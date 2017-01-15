@@ -6,6 +6,11 @@
 /captures
 /app/google-services.json
 
+# Generated files
+bin/
+gen/
+*.iml
+
 # Local files
 build.properties
 debug.keystore
